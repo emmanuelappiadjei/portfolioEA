@@ -44,78 +44,48 @@
     if (isHome && target) location.replace(target);
   })();
 
-  /* --- Liquid header ---------------------------------------------------- */
+  /* --- Header -----------------------------------------------------------
+     Hides on the way down, returns on the way up, and retires entirely once
+     the closing contact block reaches the top of the viewport, so it never
+     sits on top of the footer. */
   (function header() {
     var el = document.querySelector('.site-header');
     if (!el) return;
 
     var lastY = window.scrollY;
-    var compact = false;
+    var tucked = false;
+    var retired = false;
+    var closing = document.querySelector('.contact-block');
 
     function update() {
       var y = window.scrollY;
-      var goingDown = y > lastY;
-      var next = y > 90 && goingDown;
-      if (y < 60) next = false;
-      if (next !== compact) {
-        compact = next;
-        el.classList.toggle('is-compact', compact);
+      var down = y > lastY + 2;
+      var up = y < lastY - 2;
+
+      var wantRetired = closing
+        ? closing.getBoundingClientRect().top <= el.offsetHeight + 8
+        : false;
+
+      if (wantRetired !== retired) {
+        retired = wantRetired;
+        el.classList.toggle('is-retired', retired);
       }
-      lastY = y;
+
+      var wantTucked = tucked;
+      if (y < 90) wantTucked = false;
+      else if (down) wantTucked = true;
+      else if (up) wantTucked = false;
+
+      if (wantTucked !== tucked) {
+        tucked = wantTucked;
+        el.classList.toggle('is-tucked', tucked);
+      }
+
+      if (Math.abs(y - lastY) > 2) lastY = y;
     }
 
     update();
     scrollTasks.push(update);
-  })();
-
-  /* --- Sliding nav pill --------------------------------------------------
-     One shape that travels to whichever link is active or hovered. */
-  (function navPill() {
-    var nav = document.querySelector('.nav');
-    if (!nav) return;
-
-    var pill = nav.querySelector('.nav__pill');
-    var links = all('.nav__link', nav);
-    var current = nav.querySelector('.nav__link[aria-current="page"]');
-    if (!pill || !links.length) return;
-
-    var settleTimer = null;
-
-    // The pill stretches along its direction of travel and settles back — the
-    // small amount of give that makes the header read as one liquid material
-    // rather than a rectangle teleporting between links.
-    function moveTo(link, ready) {
-      if (!link) { pill.classList.remove('is-ready'); return; }
-
-      var x = link.offsetLeft;
-      var moving = Math.abs(x - (parseFloat(pill.dataset.x) || 0)) > 2;
-      pill.dataset.x = x;
-      pill.style.width = link.offsetWidth + 'px';
-      pill.style.transform = 'translateX(' + x + 'px) scaleX(' + (moving ? 1.16 : 1) + ')';
-
-      clearTimeout(settleTimer);
-      if (moving) {
-        settleTimer = setTimeout(function () {
-          pill.style.transform = 'translateX(' + x + 'px) scaleX(1)';
-        }, 150);
-      }
-
-      if (ready !== false) pill.classList.add('is-ready');
-    }
-
-    function settle() { moveTo(current); }
-
-    links.forEach(function (link) {
-      on(link, 'pointerenter', function () { moveTo(link); });
-      on(link, 'focus', function () { moveTo(link); });
-    });
-    on(nav, 'pointerleave', settle);
-    on(nav, 'focusout', settle);
-
-    // Fonts land after first paint and change link widths.
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(settle);
-    on(window, 'resize', settle);
-    requestAnimationFrame(settle);
   })();
 
   /* --- Mobile menu ------------------------------------------------------- */
@@ -158,7 +128,10 @@
     menu.setAttribute('aria-hidden', 'true');
   })();
 
-  /* --- Reveals ----------------------------------------------------------- */
+  /* --- Reveals -----------------------------------------------------------
+     IntersectionObserver drives the reveals, with a scroll sweep behind it so
+     an element that comes to rest exactly on the observer's bottom margin can
+     never stay stuck at zero opacity. */
   (function reveals() {
     var targets = all('[data-reveal], [data-reveal-mask], [data-mask-media]');
     if (!targets.length) return;
@@ -168,29 +141,34 @@
       return;
     }
 
+    var pending = targets.slice();
+
+    function play(el) {
+      el.classList.add('is-in');
+      io.unobserve(el);
+      var i = pending.indexOf(el);
+      if (i > -1) pending.splice(i, 1);
+    }
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-in');
-        io.unobserve(entry.target);
+        if (entry.isIntersecting) play(entry.target);
       });
-    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
 
     targets.forEach(function (el) { io.observe(el); });
 
-    // The observer's bottom margin means anything sitting in the last slice of
-    // the first screen (a scroll cue, say) would never trigger. Play those in
-    // on load instead, so nothing above the fold stays invisible.
-    requestAnimationFrame(function () {
-      targets.forEach(function (el) {
-        if (el.classList.contains('is-in')) return;
-        var rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          el.classList.add('is-in');
-          io.unobserve(el);
-        }
-      });
-    });
+    function sweep() {
+      if (!pending.length) return;
+      var limit = window.innerHeight * 0.96;
+      for (var i = pending.length - 1; i >= 0; i--) {
+        var rect = pending[i].getBoundingClientRect();
+        if (rect.top < limit && rect.bottom > 0) play(pending[i]);
+      }
+    }
+
+    scrollTasks.push(sweep);
+    requestAnimationFrame(sweep);
   })();
 
   /* Rising display type: lines travel up as their block crosses the viewport. */
@@ -267,65 +245,6 @@
 
     scrollTasks.push(update);
     update();
-  })();
-
-  /* --- Work index cursor preview -----------------------------------------
-     Desktop only. One reused element; rows carry the image source. */
-  (function workPeek() {
-    var index = document.querySelector('[data-peek-scope]');
-    if (!index || !finePointer.matches || reduceMotion.matches) return;
-
-    var rows = all('[data-peek]', index);
-    if (!rows.length) return;
-
-    var peek = document.createElement('div');
-    peek.className = 'work-peek';
-    peek.setAttribute('aria-hidden', 'true');
-    var img = document.createElement('img');
-    img.alt = '';
-    img.decoding = 'async';
-    peek.appendChild(img);
-    document.body.appendChild(peek);
-
-    var targetX = 0, targetY = 0, x = 0, y = 0, active = false, raf = null;
-
-    function loop() {
-      x += (targetX - x) * 0.14;
-      y += (targetY - y) * 0.14;
-      peek.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) translate(-50%,-50%) scale(' + (active ? 1 : 0.94) + ')';
-      if (active || Math.abs(targetX - x) > 0.5) {
-        raf = requestAnimationFrame(loop);
-      } else {
-        raf = null;
-      }
-    }
-
-    function start() { if (!raf) raf = requestAnimationFrame(loop); }
-
-    rows.forEach(function (row) {
-      on(row, 'pointerenter', function (e) {
-        if (e.pointerType === 'touch') return;
-        var src = row.getAttribute('data-peek');
-        if (src && img.getAttribute('src') !== src) img.setAttribute('src', src);
-        active = true;
-        peek.classList.add('is-visible');
-        targetX = e.clientX; targetY = e.clientY;
-        x = targetX; y = targetY;
-        start();
-      });
-
-      on(row, 'pointermove', function (e) {
-        if (e.pointerType === 'touch') return;
-        targetX = e.clientX; targetY = e.clientY;
-        start();
-      });
-
-      on(row, 'pointerleave', function () {
-        active = false;
-        peek.classList.remove('is-visible');
-        start();
-      });
-    });
   })();
 
   /* --- Scrolling landing-page shots ---------------------------------------

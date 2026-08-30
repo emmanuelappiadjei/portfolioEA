@@ -1,6 +1,6 @@
 EMMANUEL APPIADJEI PORTFOLIO
-Release: 3.0.0 — editorial rebuild
-Direction: cinematic dark editorial (near-black, graphite, off-white, restrained violet)
+Release: 3.1.0 — editorial revision (portrait-led hero, transparent adaptive header, surface system)
+Direction: near-black, graphite, soft white and muted purple-grey surfaces; restrained purple accent
 
 Stack: static HTML + CSS + JS, no runtime dependencies.
 Build: node tools/build.mjs   (renders shared partials from assets/data/site.json)

@@ -88,6 +88,16 @@ resolves; flags duplicate `id`s, `<img>` without `alt`, pages with the wrong
 number of `<h1>`s, and absolute paths that would break under a repository
 subpath.
 
+```bash
+npm start          # in one terminal
+npm run check:hero # in another
+```
+
+Loads the homepage at nine viewport sizes, maps the portrait's measured face
+box through the rendered image geometry, and fails if any text in the hero or
+the header overlaps it. Run this after touching the hero, the portrait, or the
+type scale.
+
 ---
 
 ## Structure
@@ -135,21 +145,64 @@ Defined once as custom properties at the top of `assets/css/site.css`:
 
 | Token | Value | Used for |
 | --- | --- | --- |
-| `--near-black` | `#070709` | Page ground |
-| `--charcoal` | `#111115` | Raised sections |
-| `--graphite` | `#242329` | Frames, media grounds |
-| `--line` | `#34323A` | Hairline rules and borders |
-| `--gray` | `#96939D` | Secondary text, metadata |
-| `--off-white` | `#F2F1F4` | Primary text |
-| `--violet` | `#765DB8` | Active nav, focus rings, small accents only |
+| `--black` | `#09090a` | Page ground |
+| `--graphite` | `#17171a` | Second surface |
+| `--gray-dark` | `#2a292e` | Frames, media grounds |
+| `--white` | `#f4f3f2` | Type on dark, light surfaces |
+| `--gray-light` | `#d2cfd5` | Light-surface media ground |
+| `--body-dark` | `#b8b3c0` | Body copy on dark surfaces |
+| `--body-light` | `#454149` | Body copy on light surfaces |
+| `--purple` | `#81749f` | Focus rings, one accent per section |
+| `--purple-soft` | `#aaa0bc` | Tint-surface body copy, accent word |
 
-Type is Inter Tight for display and Inter for body, both self-hosted. Every
-size is a `clamp()`, so there are no font-size breakpoints to keep in sync.
+### Surfaces
 
-Motion is hand-rolled: one `requestAnimationFrame` loop drives everything that
-reads scroll position, and `IntersectionObserver` handles reveals. There is no
-animation library to load or fail. All of it is disabled under
-`prefers-reduced-motion: reduce`, which leaves a fully readable static page.
+Sections do not restyle their contents. Each one declares a role:
+
+```html
+<section data-surface="light"> … </section>
+```
+
+`black`, `graphite`, `light`, and `tint` each redefine four tokens —
+`--ink`, `--ink-body`, `--ink-dim`, `--hairline` — and every component draws
+from those, so a section flips its whole palette from one attribute. The page
+alternates between them rather than running as one uninterrupted dark field.
+
+### Type
+
+Inter Tight for display, Inter for body, both self-hosted. Body size, leading,
+tracking, and weight come from `--body-size` / `--body-leading` /
+`--body-tracking` / `--weight-body` and are applied at the `body` and `p`
+level, so every page and case study shares one paragraph style. Display sizes
+are `clamp()`, so there are no font-size breakpoints to keep in sync.
+
+### Header
+
+Fixed, fully transparent, no container, no border, no blur. Contrast is
+adaptive: `mix-blend-mode: difference` inverts it against whatever is beneath,
+so the same markup reads on black, on soft white, over photography, and over
+the tinted sections. It tucks away on downward scroll, returns on upward
+scroll, and retires entirely once the closing contact block reaches the top of
+the viewport. Nothing between it and the page may set `isolation` or paint an
+opaque background, or the blend stops working.
+
+### Hero safe zone
+
+The hero name is never allowed to touch the portrait's face. The face position
+is measured from the source file rather than estimated — the lit features
+occupy x 58.9–70.8% and y 36.3–65.6%; everything left of 52% and above 34% is
+studio black. `--hero-focus-x`, `--hero-media-top`, and `--hero-safe-width` are
+set per breakpoint from those numbers, and a Playwright check maps the face box
+through the `object-fit: cover` geometry at nine viewport sizes and asserts no
+text element intersects it.
+
+### Motion
+
+Hand-rolled: one `requestAnimationFrame` loop drives everything that reads
+scroll position, and `IntersectionObserver` handles reveals with a scroll sweep
+behind it so nothing can stall at zero opacity. There is no animation library
+to load or fail. All of it is disabled under `prefers-reduced-motion: reduce`,
+which leaves a fully readable static page.
 
 ## Notes
 

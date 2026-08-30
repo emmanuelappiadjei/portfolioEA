@@ -27,22 +27,20 @@ const esc = (s) => String(s)
 /* ---------------------------------------------------------------- partials */
 
 function header(active) {
+  // The label is duplicated into data-label so the link can roll vertically
+  // on hover without a second element in the markup.
   const links = nav.filter((n) => n.desktop).map((n) => {
     const current = n.id === active ? ' aria-current="page"' : '';
-    return `        <a class="nav__link" href="${n.href}"${current}>${esc(n.label)}</a>`;
+    return `        <a class="nav__link" href="${n.href}"${current}><span data-label="${esc(n.label)}">${esc(n.label)}</span></a>`;
   }).join('\n');
 
   return `  <header class="site-header">
     <div class="site-header__bar">
-      <a class="brand" href="index.html" aria-label="${esc(meta.name)} — home">
-        <span class="brand__mark" aria-hidden="true">${esc(meta.shortName)}</span>
-        <span class="brand__name">${esc(meta.name)}</span>
-      </a>
+      <a class="brand" href="index.html" aria-label="${esc(meta.name)} — home">EA<sup>&reg;</sup></a>
       <nav class="nav" aria-label="Primary">
-        <span class="nav__pill" aria-hidden="true"></span>
 ${links}
       </nav>
-      <a class="header__cta" href="contact.html">Let&rsquo;s connect <span aria-hidden="true">&#8599;</span></a>
+      <a class="header__cta" href="contact.html">Let&rsquo;s connect <span class="arrow" aria-hidden="true">&#8599;</span></a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
         <span class="menu-toggle__lines" aria-hidden="true"></span>
       </button>
@@ -99,29 +97,40 @@ ${nav.map((n) => `          <a class="label" href="${n.href}">${esc(n.label)}</a
 }
 
 /* ------------------------------------------------------------- work index */
+/* Each project is an editorial block: large media on one side, type on the
+   other, alternating, with the title stepping over the edge of the image.
+   No cards, no boxes — a rule between pieces and a lot of air. */
 
-function workRows({ limit = projects.length } = {}) {
-  return projects.slice(0, limit).map((p) => `      <a class="work-row" href="${p.href}" data-peek="${p.image}" data-reveal>
-        <span class="work-row__no">${esc(p.no)}</span>
-        <span>
-          <span class="work-row__title">${esc(p.title)}</span>
-          <span class="work-row__meta">
+function workPieces({ limit = projects.length } = {}) {
+  return projects.slice(0, limit).map((p, i) => {
+    const flip = i % 2 === 1 ? ' work-piece--flip' : '';
+    return `      <a class="work-piece${flip}" href="${p.href}">
+        <span class="work-piece__media" data-mask-media>
+          <img src="${p.image}" alt="${esc(p.imageAlt)}" width="${p.width}" height="${p.height}"
+               loading="lazy" decoding="async" data-parallax="3" data-parallax-scale="1.08">
+        </span>
+        <span class="work-piece__body">
+          <span class="work-piece__no">${esc(p.no)}</span>
+          <span class="work-piece__title">${esc(p.title)}</span>
+          <span class="work-piece__meta">
             <span class="label">${esc(p.client)}</span>
             <span class="label">${esc(p.category)}</span>
             <span class="label">${esc(p.year)}</span>
           </span>
+          <span class="work-piece__role">${esc(p.role)}</span>
+          <span class="work-piece__result">
+            <b>${esc(p.result)}</b>
+            <i>${esc(p.resultNote)}</i>
+          </span>
+          <span class="work-piece__cta">View case study <span class="arrow" aria-hidden="true">&#8599;</span></span>
         </span>
-        <span class="work-row__thumb">
-          <img src="${p.image}" alt="${esc(p.imageAlt)}" width="${p.width}" height="${p.height}" loading="lazy" decoding="async">
-        </span>
-        <span class="work-row__role">${esc(p.role)}</span>
-        <span class="work-row__result">${esc(p.result)} <span aria-hidden="true">&#8599;</span></span>
-      </a>`).join('\n');
+      </a>`;
+  }).join('\n');
 }
 
 function workIndex(opts) {
-  return `    <div class="work-index" data-peek-scope>
-${workRows(opts)}
+  return `    <div class="work-index">
+${workPieces(opts)}
     </div>`;
 }
 

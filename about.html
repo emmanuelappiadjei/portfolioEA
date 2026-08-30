@@ -24,18 +24,14 @@
   <!-- build:header -->
   <header class="site-header">
     <div class="site-header__bar">
-      <a class="brand" href="index.html" aria-label="Emmanuel Appiadjei — home">
-        <span class="brand__mark" aria-hidden="true">EA</span>
-        <span class="brand__name">Emmanuel Appiadjei</span>
-      </a>
+      <a class="brand" href="index.html" aria-label="Emmanuel Appiadjei — home">EA<sup>&reg;</sup></a>
       <nav class="nav" aria-label="Primary">
-        <span class="nav__pill" aria-hidden="true"></span>
-        <a class="nav__link" href="work.html">Work</a>
-        <a class="nav__link" href="landing-pages.html">Landing Pages</a>
-        <a class="nav__link" href="emails.html">Emails</a>
-        <a class="nav__link" href="about.html" aria-current="page">About</a>
+        <a class="nav__link" href="work.html"><span data-label="Work">Work</span></a>
+        <a class="nav__link" href="landing-pages.html"><span data-label="Landing Pages">Landing Pages</span></a>
+        <a class="nav__link" href="emails.html"><span data-label="Emails">Emails</span></a>
+        <a class="nav__link" href="about.html" aria-current="page"><span data-label="About">About</span></a>
       </nav>
-      <a class="header__cta" href="contact.html">Let&rsquo;s connect <span aria-hidden="true">&#8599;</span></a>
+      <a class="header__cta" href="contact.html">Let&rsquo;s connect <span class="arrow" aria-hidden="true">&#8599;</span></a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
         <span class="menu-toggle__lines" aria-hidden="true"></span>
       </button>
@@ -119,14 +115,14 @@
 
             <div style="margin-top:clamp(34px,4.4vw,60px)">
               <span class="label label--dot" data-reveal>03 &mdash; Tools</span>
-              <div class="tag-row" style="margin-top:clamp(14px,1.8vw,22px)">
-                <span class="tag">HubSpot</span>
-                <span class="tag">Canva</span>
-                <span class="tag">Responsive email HTML</span>
-                <span class="tag">HTML &amp; CSS</span>
-                <span class="tag">Meta &amp; LinkedIn</span>
-                <span class="tag">Campaign reporting</span>
-              </div>
+              <ul class="inline-list" style="margin-top:clamp(14px,1.8vw,22px)">
+                <li>HubSpot</li>
+                <li>Canva</li>
+                <li>Responsive email HTML</li>
+                <li>HTML &amp; CSS</li>
+                <li>Meta &amp; LinkedIn</li>
+                <li>Campaign reporting</li>
+              </ul>
               <p class="label" style="margin-top:14px;color:var(--ink-faint);text-transform:none;letter-spacing:.02em;font-size:12px">Tools listed are the ones evidenced in the case studies and builds on this site.</p>
             </div>
           </div>
@@ -135,7 +131,7 @@
     </section>
 
     <!-- Areas of focus -->
-    <section class="section section--raised">
+    <section class="section" data-surface="light">
       <div class="shell">
         <div class="section-head">
           <div class="section-head__meta section-marker">

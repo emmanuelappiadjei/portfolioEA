@@ -24,18 +24,14 @@
   <!-- build:header -->
   <header class="site-header">
     <div class="site-header__bar">
-      <a class="brand" href="index.html" aria-label="Emmanuel Appiadjei — home">
-        <span class="brand__mark" aria-hidden="true">EA</span>
-        <span class="brand__name">Emmanuel Appiadjei</span>
-      </a>
+      <a class="brand" href="index.html" aria-label="Emmanuel Appiadjei — home">EA<sup>&reg;</sup></a>
       <nav class="nav" aria-label="Primary">
-        <span class="nav__pill" aria-hidden="true"></span>
-        <a class="nav__link" href="work.html" aria-current="page">Work</a>
-        <a class="nav__link" href="landing-pages.html">Landing Pages</a>
-        <a class="nav__link" href="emails.html">Emails</a>
-        <a class="nav__link" href="about.html">About</a>
+        <a class="nav__link" href="work.html" aria-current="page"><span data-label="Work">Work</span></a>
+        <a class="nav__link" href="landing-pages.html"><span data-label="Landing Pages">Landing Pages</span></a>
+        <a class="nav__link" href="emails.html"><span data-label="Emails">Emails</span></a>
+        <a class="nav__link" href="about.html"><span data-label="About">About</span></a>
       </nav>
-      <a class="header__cta" href="contact.html">Let&rsquo;s connect <span aria-hidden="true">&#8599;</span></a>
+      <a class="header__cta" href="contact.html">Let&rsquo;s connect <span class="arrow" aria-hidden="true">&#8599;</span></a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
         <span class="menu-toggle__lines" aria-hidden="true"></span>
       </button>
@@ -92,7 +88,7 @@
       </div>
     </div>
 
-    <section class="section">
+    <section class="section" data-surface="graphite">
       <div class="shell case-body">
         <nav class="case-nav" aria-label="Case study sections">
           <a href="#overview">Overview</a>
