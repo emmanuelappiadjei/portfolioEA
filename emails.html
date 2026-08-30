@@ -48,7 +48,7 @@
     <a class="mobile-menu__link" href="about.html">About <span class="label">05</span></a>
     <a class="mobile-menu__link" href="contact.html">Contact <span class="label">06</span></a>
     <div class="mobile-menu__foot">
-      <a class="label label--dot" href="mailto:eappiadjei11@gmail.com">eappiadjei11@gmail.com</a>
+      <a class="label" href="mailto:eappiadjei11@gmail.com">eappiadjei11@gmail.com</a>
       <span class="label">United States</span>
     </div>
   </div>
@@ -58,7 +58,7 @@
     <section class="case-hero">
       <div class="shell">
         <div class="section-head__meta">
-          <span class="label label--dot">Index &mdash; Emails</span>
+          <span class="label">Index &mdash; Emails</span>
           <span class="label">Design + content + build</span>
         </div>
         <h1 class="case-hero__title" data-rise="0.8" style="margin-top:clamp(18px,2.4vw,30px)">
@@ -78,7 +78,7 @@
     <div class="email-list">
       <article class="email-item" data-reveal>
         <div class="email-item__body">
-          <span class="label label--dot">01 / Promotional</span>
+          <span class="label">01 / Promotional</span>
           <h3 class="d-md" style="margin:.5em 0 .4em">Peacefest</h3>
           <p class="body-copy">A high-energy festival announcement built around artist discovery, lineup momentum, and a direct ticket call to action.</p>
           <div class="tag-row" style="margin:18px 0">
@@ -100,7 +100,7 @@
       </article>
       <article class="email-item email-item--flip" data-reveal>
         <div class="email-item__body">
-          <span class="label label--dot">02 / Lifecycle</span>
+          <span class="label">02 / Lifecycle</span>
           <h3 class="d-md" style="margin:.5em 0 .4em">Peace Grounds</h3>
           <p class="body-copy">A warm, modular pickup email that pairs brand storytelling with product highlights and a clear return-order path.</p>
           <div class="tag-row" style="margin:18px 0">
@@ -122,7 +122,7 @@
       </article>
       <article class="email-item" data-reveal>
         <div class="email-item__body">
-          <span class="label label--dot">03 / B2B event</span>
+          <span class="label">03 / B2B event</span>
           <h3 class="d-md" style="margin:.5em 0 .4em">HFMA Day at the Track</h3>
           <p class="body-copy">A HubSpot event-outreach email organising venue details, attending-team information, brand context, and a direct connection CTA.</p>
           <div class="tag-row" style="margin:18px 0">
@@ -144,7 +144,7 @@
       </article>
       <article class="email-item email-item--flip" data-reveal>
         <div class="email-item__body">
-          <span class="label label--dot">04 / Confirmation</span>
+          <span class="label">04 / Confirmation</span>
           <h3 class="d-md" style="margin:.5em 0 .4em">Mahjong Social RSVP</h3>
           <p class="body-copy">The confirmation email that closes the Mahjong Social registration loop — venue, timing, and what to expect on arrival.</p>
           <div class="tag-row" style="margin:18px 0">
@@ -174,18 +174,39 @@
   <section class="contact-block section" id="contact">
     <span class="contact-block__glow" aria-hidden="true"></span>
     <div class="shell contact-block__inner">
-      <div class="section-head" style="border-top:0;padding-top:0">
-        <div class="section-head__meta section-marker">
-          <span class="section-marker__word">Contact</span>
-          <span class="label">United States</span>
-        </div>
+
+      <div class="contact-rule">
+        <span aria-hidden="true">&#123;</span>
+        <span class="label">Let&rsquo;s connect</span>
+        <span class="contact-rule__mark" aria-hidden="true"></span>
+        <span class="label contact-rule__echo" aria-hidden="true">Let&rsquo;s connect</span>
+        <span aria-hidden="true">&#125;</span>
       </div>
-      <p class="lede contact-block__prompt" data-reveal>Have a role, campaign, or event in mind?</p>
-      <a class="contact-mail" href="mailto:eappiadjei11@gmail.com" data-reveal>Let&rsquo;s<br>connect</a>
-      <span class="contact-monogram" aria-hidden="true">EA<sup>&reg;</sup></span>
-      <div class="site-foot__row" data-reveal>
-        <a class="link-action" href="mailto:eappiadjei11@gmail.com">eappiadjei11@gmail.com <span class="arrow" aria-hidden="true">&#8599;</span></a>
-        <a class="link-action" href="contact.html">Contact page <span class="arrow" aria-hidden="true">&#8599;</span></a>
+
+      <h2 class="contact-head" data-reveal>
+        <span class="contact-head__wash">Have a role,</span>
+        <span class="contact-head__chip" aria-hidden="true">
+          <img src="assets/images/portrait-hero.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+        </span>
+        <span class="contact-head__wash">campaign or event in mind?</span>
+      </h2>
+
+      <form class="contact-form" data-mailto="eappiadjei11@gmail.com" data-reveal>
+        <p class="contact-form__field">
+          <label for="cf-name">Name</label>
+          <input id="cf-name" name="name" type="text" autocomplete="name" placeholder="Name">
+        </p>
+        <p class="contact-form__field">
+          <label for="cf-note">What you&rsquo;re working on</label>
+          <input id="cf-note" name="note" type="text" placeholder="What you&rsquo;re working on">
+        </p>
+        <button type="submit">Send <span class="arrow" aria-hidden="true">&#8629;</span></button>
+      </form>
+      <p class="contact-form__note">Opens a draft in your mail app &mdash; or write to me directly below.</p>
+
+      <div class="contact-write" data-reveal>
+        <span class="label">Write</span>
+        <a class="contact-mail" href="mailto:eappiadjei11@gmail.com">eappiadjei11@gmail.com</a>
       </div>
     </div>
   </section>
@@ -202,7 +223,7 @@
           <a class="label" href="about.html">About</a>
           <a class="label" href="contact.html">Contact</a>
         </div>
-        <span class="label">Creative + Content Marketing</span>
+        <span class="label">Creative + Brand Marketing</span>
       </div>
     </div>
   </footer>

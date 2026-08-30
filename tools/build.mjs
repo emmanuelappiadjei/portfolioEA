@@ -57,7 +57,7 @@ function mobileMenu(active) {
   return `  <div class="mobile-menu" id="mobile-menu">
 ${links}
     <div class="mobile-menu__foot">
-      <a class="label label--dot" href="mailto:${meta.email}">${esc(meta.email)}</a>
+      <a class="label" href="mailto:${meta.email}">${esc(meta.email)}</a>
       <span class="label">${esc(meta.location)}</span>
     </div>
   </div>`;
@@ -67,18 +67,39 @@ function contact() {
   return `  <section class="contact-block section" id="contact">
     <span class="contact-block__glow" aria-hidden="true"></span>
     <div class="shell contact-block__inner">
-      <div class="section-head" style="border-top:0;padding-top:0">
-        <div class="section-head__meta section-marker">
-          <span class="section-marker__word">Contact</span>
-          <span class="label">${esc(meta.location)}</span>
-        </div>
+
+      <div class="contact-rule">
+        <span aria-hidden="true">&#123;</span>
+        <span class="label">Let&rsquo;s connect</span>
+        <span class="contact-rule__mark" aria-hidden="true"></span>
+        <span class="label contact-rule__echo" aria-hidden="true">Let&rsquo;s connect</span>
+        <span aria-hidden="true">&#125;</span>
       </div>
-      <p class="lede contact-block__prompt" data-reveal>${esc(meta.contactPrompt)}</p>
-      <a class="contact-mail" href="mailto:${meta.email}" data-reveal>Let&rsquo;s<br>connect</a>
-      <span class="contact-monogram" aria-hidden="true">${esc(meta.shortName)}<sup>&reg;</sup></span>
-      <div class="site-foot__row" data-reveal>
-        <a class="link-action" href="mailto:${meta.email}">${esc(meta.email)} <span class="arrow" aria-hidden="true">&#8599;</span></a>
-        <a class="link-action" href="contact.html">Contact page <span class="arrow" aria-hidden="true">&#8599;</span></a>
+
+      <h2 class="contact-head" data-reveal>
+        <span class="contact-head__wash">Have a role,</span>
+        <span class="contact-head__chip" aria-hidden="true">
+          <img src="assets/images/portrait-hero.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+        </span>
+        <span class="contact-head__wash">campaign or event in mind?</span>
+      </h2>
+
+      <form class="contact-form" data-mailto="${meta.email}" data-reveal>
+        <p class="contact-form__field">
+          <label for="cf-name">Name</label>
+          <input id="cf-name" name="name" type="text" autocomplete="name" placeholder="Name">
+        </p>
+        <p class="contact-form__field">
+          <label for="cf-note">What you&rsquo;re working on</label>
+          <input id="cf-note" name="note" type="text" placeholder="What you&rsquo;re working on">
+        </p>
+        <button type="submit">Send <span class="arrow" aria-hidden="true">&#8629;</span></button>
+      </form>
+      <p class="contact-form__note">Opens a draft in your mail app &mdash; or write to me directly below.</p>
+
+      <div class="contact-write" data-reveal>
+        <span class="label">Write</span>
+        <a class="contact-mail" href="mailto:${meta.email}">${esc(meta.email)}</a>
       </div>
     </div>
   </section>
@@ -151,7 +172,7 @@ function landingItems({ limit = landing.length } = {}) {
         </div>
         <div class="archive-item__body">
           <div class="section-head__meta" style="border:0">
-            <span class="label label--dot">${esc(l.no)} / ${esc(l.category)}</span>
+            <span class="label">${esc(l.no)} / ${esc(l.category)}</span>
             <span class="label">${esc(l.platform)}</span>
           </div>
           <h3 class="archive-item__title">${esc(l.title)}</h3>
@@ -188,7 +209,7 @@ function emailItems({ limit = emails.length } = {}) {
 
     return `      <article class="email-item${flip}" data-reveal>
         <div class="email-item__body">
-          <span class="label label--dot">${esc(e.no)} / ${esc(e.kind)}</span>
+          <span class="label">${esc(e.no)} / ${esc(e.kind)}</span>
           <h3 class="d-md" style="margin:.5em 0 .4em">${esc(e.title)}</h3>
           <p class="body-copy">${esc(e.note)}</p>
           <div class="tag-row" style="margin:18px 0">
@@ -255,7 +276,7 @@ function nextProject(currentId) {
       <img src="${next.image}" alt="" width="${next.width}" height="${next.height}" loading="lazy" decoding="async">
     </span>
     <span class="shell next-project__inner">
-      <span class="label label--dot">Next project</span>
+      <span class="label">Next project</span>
       <span class="next-project__title">${esc(next.title)}</span>
       <span class="label" style="display:block;margin-top:14px">${esc(next.client)} &mdash; ${esc(next.category)}</span>
     </span>

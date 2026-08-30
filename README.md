@@ -1,6 +1,6 @@
 # Emmanuel Appiadjei — Portfolio
 
-A static, dependency-free portfolio for creative and content marketing work:
+A static, dependency-free portfolio for creative and brand marketing work:
 campaigns, events, landing pages, and email design.
 
 Plain HTML, CSS, and JavaScript. No framework, no bundler, no runtime

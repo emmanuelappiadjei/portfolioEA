@@ -51,7 +51,6 @@
   --hero-focus-x: 50%;
   --hero-focus-y: 0%;
   --hero-media-top: 0px;
-  --hero-safe-width: 47%;
 }
 
 /* --- Surface system ------------------------------------------------------
@@ -237,21 +236,6 @@ p:last-child { margin-bottom: 0; }
   line-height: 1.4;
 }
 
-.label--dot { position: relative; padding-left: 15px; }
-.label--dot::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.52em;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--ink-dim) 62%, transparent);
-}
-
-/* Opt in, sparingly — one accented marker per page at most. */
-.label--accent::before { background: var(--purple); }
-
 .lede {
   font-size: clamp(1.15rem, 0.98rem + 0.7vw, 1.6rem);
   line-height: 1.4;
@@ -269,16 +253,8 @@ p:last-child { margin-bottom: 0; }
 .body-copy strong,
 p strong { color: var(--ink); font-weight: 560; }
 
-/* Outlined display text — used once or twice per page, never as decoration. */
-.outline-type {
-  color: transparent;
-  -webkit-text-stroke: 1px color-mix(in srgb, var(--ink-dim) 46%, transparent);
-  text-stroke: 1px color-mix(in srgb, var(--ink-dim) 46%, transparent);
-}
-
-@supports not ((-webkit-text-stroke: 1px red) or (text-stroke: 1px red)) {
-  .outline-type { color: color-mix(in srgb, var(--ink-dim) 40%, transparent); }
-}
+/* A quieter second tone for the trailing line of a display heading. */
+.outline-type { color: color-mix(in srgb, var(--ink-dim) 62%, transparent); }
 
 /* 4 — Layout ------------------------------------------------------------- */
 .shell {
@@ -689,23 +665,54 @@ p strong { color: var(--ink); font-weight: 560; }
   flex: none;
 }
 
+/* Full name across the top. Laid out as inline words so it sits on one line
+   where there is room and wraps on narrow screens, instead of being capped to
+   a width that clipped the last letter. */
 .hero__name {
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.22em;
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.055em;
-  line-height: 0.83;
+  line-height: 0.86;
   text-transform: uppercase;
   color: var(--white);
+  font-size: clamp(2.6rem, 7.6vw, 7.4rem);
 }
 
 .hero__name .line {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.035em;
+  padding-bottom: 0.06em;
 }
 
 .hero__name .line > span { display: block; will-change: transform; }
+
+/* Monogram watermark sitting with the portrait, well under the type. */
+.hero__monogram {
+  position: absolute;
+  z-index: -1;
+  left: var(--gutter);
+  top: 36%;
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 15vw, 14rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  color: var(--white);
+  opacity: 0.075;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.hero__monogram sup {
+  font-size: 0.2em;
+  vertical-align: super;
+  letter-spacing: 0;
+}
 
 /* Small metadata sits low, over the suit, where it stays legible and clear of
    the face entirely. */
@@ -732,52 +739,8 @@ p strong { color: var(--ink); font-weight: 560; }
 .hero__band a { border-bottom: 1px solid var(--hairline); }
 .hero__band a:hover { border-color: var(--white); }
 
-.hero__cue {
-  margin-top: clamp(16px, 2.4vh, 30px);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 20px;
-}
-
-/* Scroll cue */
-.scroll-cue {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--ink-dim);
-}
-
-.scroll-cue__track {
-  position: relative;
-  width: 1px;
-  height: 24px;
-  background: var(--hairline);
-  overflow: hidden;
-}
-
-.scroll-cue__track::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 1px;
-  height: 10px;
-  background: color-mix(in srgb, var(--white) 70%, transparent);
-  animation: cue-drop 2.1s var(--ease-inout) infinite;
-}
-
-@keyframes cue-drop {
-  0%   { transform: translateY(-12px); opacity: 0; }
-  35%  { opacity: 1; }
-  100% { transform: translateY(24px); opacity: 0; }
-}
-
 /* --- Breakpoint focal points -------------------------------------------- */
 @media (min-width: 900px) {
-  .hero__name {
-    font-size: clamp(3.4rem, 9vw, 9.4rem);
-    max-width: var(--hero-safe-width);
-  }
   .hero__band { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
@@ -789,15 +752,13 @@ p strong { color: var(--ink); font-weight: 560; }
    moves to keep him in shot, and the name stays inside the black column so it
    clears the whole head silhouette, not just the features. */
 @media (max-width: 1023px) and (min-width: 701px) {
-  :root { --hero-focus-x: 55%; --hero-safe-width: 44%; }
-  .hero__name {
-    font-size: clamp(2.2rem, 7.4vw, 4.6rem);
-    max-width: var(--hero-safe-width);
-  }
+  :root { --hero-focus-x: 58%; }
 }
 
+/* Narrow: the name wraps to two lines and runs larger. */
 @media (max-width: 700px) {
-  .hero__name { font-size: clamp(2.5rem, 13vw, 5.6rem); max-width: 100%; }
+  .hero__name { font-size: clamp(2.5rem, 12.5vw, 4.4rem); }
+  .hero__monogram { top: 30%; font-size: clamp(4rem, 26vw, 9rem); opacity: 0.085; }
 }
 
 /* Phone: the portrait takes the lower frame and the name stacks above the
@@ -808,12 +769,10 @@ p strong { color: var(--ink); font-weight: 560; }
     /* Raised so the jaw clears the metadata band; verified against the
        measured face box at 390x844 and 360x740. */
     --hero-media-top: 20svh;
-    --hero-safe-width: 100%;
   }
 
   .hero__inner { padding-top: clamp(66px, 9vh, 90px); }
   .hero__band p { font-size: 12px; line-height: 1.45; }
-  .hero__cue { margin-top: clamp(10px, 1.6vh, 18px); }
 }
 
 /* Small phones: one fewer column in the band and a higher portrait, so the
@@ -849,15 +808,7 @@ p strong { color: var(--ink); font-weight: 560; }
 .statement__type .line:nth-child(2) > span { padding-left: clamp(20px, 9vw, 190px); }
 .statement__type .line:nth-child(3) > span { padding-left: clamp(40px, 21vw, 430px); }
 
-.statement__accent {
-  color: transparent;
-  -webkit-text-stroke: 1px var(--purple-soft);
-  text-stroke: 1px var(--purple-soft);
-}
-
-@supports not ((-webkit-text-stroke: 1px red) or (text-stroke: 1px red)) {
-  .statement__accent { color: var(--purple-soft); }
-}
+.statement__accent { color: var(--purple-soft); }
 
 .statement__type .line {
   display: block;
@@ -927,13 +878,11 @@ p strong { color: var(--ink); font-weight: 560; }
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  filter: grayscale(1) brightness(0.5) contrast(1.14);
   transition: filter var(--t-mid) var(--ease-out), transform 700ms var(--ease-out);
 }
 
 .hero__frame:hover img,
 .hero__frame:focus-visible img {
-  filter: grayscale(0.1) brightness(1);
   transform: scale(1.05);
 }
 
@@ -969,7 +918,7 @@ p strong { color: var(--ink); font-weight: 560; }
 
 .work-piece__media {
   position: relative;
-  grid-column: 1 / span 7;
+  grid-column: 1 / span 6;
   grid-row: 1;
   overflow: hidden;
   aspect-ratio: 4 / 3;
@@ -980,12 +929,12 @@ p strong { color: var(--ink); font-weight: 560; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(0.9) brightness(0.5) contrast(1.1);
-  transition: filter 900ms var(--ease-out), transform 900ms var(--ease-out);
+  transition: transform 900ms var(--ease-out);
 }
 
 .work-piece__body {
   grid-column: 8 / span 5;
+  padding-block: clamp(4px, 1vw, 18px);
   grid-row: 1;
   display: grid;
   gap: clamp(10px, 1.2vw, 16px);
@@ -995,36 +944,15 @@ p strong { color: var(--ink); font-weight: 560; }
 }
 
 /* Alternating side, and the type steps over the edge of the image. */
-.work-piece--flip .work-piece__media { grid-column: 6 / span 7; }
+.work-piece--flip .work-piece__media { grid-column: 7 / span 6; }
 .work-piece--flip .work-piece__body { grid-column: 1 / span 5; }
 
-/* Only the title steps over the image; the reading copy stays clear of it. */
+/* Type sits beside the image, never across it. */
 @media (min-width: 1000px) {
-  .work-piece__title { margin-left: clamp(-72px, -4vw, -28px); }
   .work-piece--flip .work-piece__body { text-align: right; }
-  .work-piece--flip .work-piece__title { margin-left: 0; margin-right: clamp(-72px, -4vw, -28px); }
   .work-piece--flip .work-piece__meta,
   .work-piece--flip .work-piece__result { justify-content: flex-end; }
   .work-piece--flip .work-piece__role { margin-left: auto; }
-}
-
-/* A short gradient on the edge the title crosses, so it always reads. */
-.work-piece__media::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 0 auto;
-  width: 26%;
-  pointer-events: none;
-  background: linear-gradient(to right, transparent, color-mix(in srgb, var(--black) 88%, transparent));
-}
-
-.work-piece--flip .work-piece__media::after {
-  inset: 0 auto 0 0;
-  background: linear-gradient(to left, transparent, color-mix(in srgb, var(--black) 88%, transparent));
-}
-
-@media (max-width: 999px) {
-  .work-piece__media::after { display: none; }
 }
 
 .work-piece__no {
@@ -1113,10 +1041,7 @@ p strong { color: var(--ink); font-weight: 560; }
 .work-piece--flip .work-piece__cta::after { transform-origin: 100% 50%; }
 
 @media (hover: hover) and (pointer: fine) {
-  .work-piece:hover .work-piece__media img {
-    filter: grayscale(0.06) brightness(0.92) contrast(1.02);
-    transform: scale(1.045);
-  }
+  .work-piece:hover .work-piece__media img { transform: scale(1.045); }
   .work-piece:hover .work-piece__no { color: var(--purple-soft); }
   .work-piece:hover .work-piece__cta::after { transform: scaleX(1); }
   .work-piece:hover .work-piece__title { transform: translateX(clamp(4px, 0.6vw, 12px)); }
@@ -1283,14 +1208,12 @@ p strong { color: var(--ink); font-weight: 560; }
 .archive-item__shot img {
   width: 100%;
   height: auto;
-  filter: grayscale(0.72) brightness(0.74);
-  transition: transform 5.6s var(--ease-inout), filter var(--t-section) var(--ease-out);
+  transition: transform 5.6s var(--ease-inout);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .archive-item:hover .archive-item__shot img,
   .archive-item__frame:focus-within .archive-item__shot img {
-    filter: grayscale(0) brightness(0.98);
     transform: translateY(calc(-100% + var(--shot-h, 100%)));
   }
 }
@@ -1539,59 +1462,187 @@ p strong { color: var(--ink); font-weight: 560; }
 .inline-list li:last-child { padding-right: 0; }
 
 /* 12 — Contact / footer -------------------------------------------------- */
-.contact-block { position: relative; overflow: hidden; }
+.contact-block {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(70px, 11vw, 170px);
+}
 
+/* The colour in the section: a soft violet bloom under the headline. */
 .contact-block__glow {
   position: absolute;
-  left: 50%;
-  bottom: -46%;
-  transform: translateX(-50%);
-  width: min(120vw, 1500px);
-  aspect-ratio: 2 / 1;
-  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--purple) 13%, transparent) 0%, transparent 62%);
-  opacity: 0.22;
-  filter: blur(40px);
+  left: 22%;
+  top: 6%;
+  width: min(90vw, 1100px);
+  aspect-ratio: 1.6;
+  transform: translateX(-30%);
+  background: radial-gradient(ellipse at center,
+    color-mix(in srgb, var(--purple) 52%, transparent) 0%,
+    color-mix(in srgb, var(--purple) 16%, transparent) 42%,
+    transparent 70%);
+  opacity: 0.62;
+  filter: blur(56px);
   pointer-events: none;
 }
 
 .contact-block__inner { position: relative; z-index: 1; }
 
-.contact-block__prompt { margin-top: clamp(18px, 2.4vw, 30px); }
+/* Thin marker row across the top of the block. */
+.contact-rule {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: clamp(30px, 5vw, 72px);
+  font-family: var(--font-display);
+  color: var(--ink-dim);
+}
+
+.contact-rule > span:first-child,
+.contact-rule > span:last-child { font-size: 1.1rem; line-height: 1; }
+
+.contact-rule__mark {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--purple-soft);
+  flex: none;
+}
+
+@media (max-width: 700px) {
+  .contact-rule .contact-rule__echo,
+  .contact-rule > span:first-child,
+  .contact-rule > span:last-child { display: none; }
+  .contact-rule { justify-content: flex-start; gap: 12px; }
+}
+
+/* Headline: the wash runs through the letterforms themselves. */
+.contact-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.24em;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 9vw, 8.2rem);
+  font-weight: var(--weight-display);
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.contact-head__wash {
+  background-image: linear-gradient(104deg,
+    var(--white) 0%,
+    var(--purple-soft) 28%,
+    var(--purple) 52%,
+    var(--purple-soft) 72%,
+    var(--white) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Any engine without background-clip: text still gets readable type. */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .contact-head__wash { color: var(--white); background-image: none; }
+}
+
+/* Small inline media set into the sentence. */
+.contact-head__chip {
+  display: inline-block;
+  width: clamp(76px, 9vw, 156px);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  flex: none;
+  align-self: center;
+  transform: translateY(-0.06em);
+}
+
+.contact-head__chip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 22%;
+}
+
+/* Form — posts nothing; it composes a message in the reader's mail app. */
+.contact-form {
+  display: grid;
+  gap: 1px;
+  margin-top: clamp(34px, 5vw, 74px);
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+}
+
+@media (min-width: 820px) {
+  .contact-form { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(180px, 0.5fr); }
+}
+
+.contact-form__field { position: relative; margin: 0; }
+
+.contact-form__field label {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.contact-form input {
+  width: 100%;
+  padding: clamp(18px, 2.2vw, 28px) clamp(16px, 1.6vw, 24px);
+  border: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: clamp(0.95rem, 1vw, 1.05rem);
+}
+
+.contact-form input::placeholder { color: var(--ink-faint); }
+.contact-form input:focus { outline: 2px solid var(--purple); outline-offset: -2px; }
+
+.contact-form button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: clamp(18px, 2.2vw, 28px) clamp(16px, 1.6vw, 24px);
+  background: var(--white);
+  color: var(--black);
+  font-size: clamp(0.95rem, 1vw, 1.05rem);
+  font-weight: 550;
+  transition: background var(--t-micro) linear;
+}
+
+.contact-form button:hover { background: var(--purple-soft); }
+
+.contact-form__note {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--ink-faint);
+}
+
+.contact-write {
+  margin-top: clamp(48px, 8vw, 110px);
+  display: grid;
+  gap: clamp(10px, 1.2vw, 16px);
+}
 
 .contact-mail {
   display: block;
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: var(--weight-display);
   letter-spacing: -0.05em;
-  line-height: 0.88;
-  font-size: clamp(2.2rem, 9.2vw, 8.4rem);
+  line-height: 0.94;
+  font-size: clamp(1.5rem, 5.4vw, 4.6rem);
   text-transform: uppercase;
-  margin-block: clamp(20px, 3vw, 38px);
-  transition: color var(--t-mid) var(--ease-out);
   word-break: break-word;
+  transition: color var(--t-mid) var(--ease-out);
 }
 
-.contact-mail:hover { color: var(--ink-dim); }
-
-.contact-monogram {
-  display: block;
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 16vw, 15rem);
-  font-weight: 700;
-  letter-spacing: -0.06em;
-  line-height: 0.8;
-  text-align: right;
-  color: color-mix(in srgb, var(--ink-dim) 12%, transparent);
-  pointer-events: none;
-  user-select: none;
-  margin-top: clamp(-30px, -3vw, -12px);
-}
-
-.contact-monogram sup {
-  font-size: 0.2em;
-  vertical-align: super;
-  letter-spacing: 0;
-}
+.contact-mail:hover { color: var(--purple-soft); }
 
 .site-foot {
   border-top: 1px solid var(--hairline);
@@ -1669,13 +1720,7 @@ p strong { color: var(--ink); font-weight: 560; }
 /* A light tonal hold seats campaign photography in the dark page; it comes
    back to full strength on hover, and is never applied on touch devices where
    there is no hover to restore it. */
-@media (hover: hover) and (pointer: fine) {
-  .case-media img {
-    filter: grayscale(0.32) brightness(0.88) contrast(1.03);
-    transition: filter var(--t-section) var(--ease-out);
-  }
-  .case-media:hover img { filter: none; }
-}
+
 
 .case-media--bleed { border-radius: 0; }
 
@@ -1821,12 +1866,11 @@ p strong { color: var(--ink); font-weight: 560; }
   border-radius: 0;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  filter: grayscale(0.72) brightness(0.74) contrast(1.05);
   transition: filter var(--t-section) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .gallery figure:hover img { filter: grayscale(0) brightness(0.98); }
+  .gallery figure:hover img { filter: none; }
 }
 
 .gallery figcaption { margin-top: 9px; }
@@ -1850,7 +1894,7 @@ p strong { color: var(--ink); font-weight: 560; }
   transform: scale(1.06);
 }
 
-.next-project__bg img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.4) brightness(0.4); }
+.next-project__bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5); }
 
 .next-project:hover .next-project__bg { opacity: 0.5; transform: scale(1); }
 
@@ -1868,46 +1912,6 @@ p strong { color: var(--ink); font-weight: 560; }
 }
 
 .next-project:hover .next-project__title { transform: translateX(clamp(6px, 1vw, 18px)); }
-
-/* 14 — Cursor ------------------------------------------------------------ */
-.cursor-dot,
-.cursor-ring {
-  position: fixed;
-  top: 0; left: 0;
-  z-index: 1100;
-  pointer-events: none;
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 200ms linear;
-  will-change: transform;
-}
-
-.cursor-dot {
-  width: 5px; height: 5px;
-  margin: -2.5px 0 0 -2.5px;
-  background: var(--ink);
-}
-
-.cursor-ring {
-  width: 30px; height: 30px;
-  margin: -15px 0 0 -15px;
-  border: 1px solid color-mix(in srgb, var(--ink-dim) 62%, transparent);
-  transition: opacity 200ms linear, width 260ms var(--ease-out), height 260ms var(--ease-out),
-              margin 260ms var(--ease-out), border-color 260ms linear,
-              background 260ms linear;
-}
-
-.has-cursor .cursor-dot,
-.has-cursor .cursor-ring { opacity: 1; }
-
-.has-cursor.cursor-active .cursor-ring {
-  width: 52px; height: 52px;
-  margin: -26px 0 0 -26px;
-  border-color: color-mix(in srgb, var(--purple) 82%, transparent);
-  background: color-mix(in srgb, var(--purple) 12%, transparent);
-}
-
-.has-cursor.cursor-active .cursor-dot { opacity: 0; }
 
 /* 15 — Motion primitives ------------------------------------------------- */
 [data-reveal] {
@@ -1984,9 +1988,7 @@ p strong { color: var(--ink); font-weight: 560; }
   [data-reveal-mask] > * { opacity: 1; transform: none; }
   [data-mask-media]::after { display: none; }
   .marquee__track { animation: none; transform: none; }
-  .scroll-cue__track::after { animation: none; opacity: 1; transform: translateY(10px); }
   .hero__media img { transform: none; }
-  .cursor-dot, .cursor-ring { display: none; }
 }
 
 /* 16 — Responsive -------------------------------------------------------- */

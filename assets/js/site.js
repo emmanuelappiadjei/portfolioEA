@@ -62,9 +62,14 @@
       var down = y > lastY + 2;
       var up = y < lastY - 2;
 
-      var wantRetired = closing
-        ? closing.getBoundingClientRect().top <= el.offsetHeight + 8
-        : false;
+      // Only retire once the reader is genuinely near the foot of the page.
+      // Testing the contact block alone made a freshly-loaded page hide its
+      // header, because at first paint the images have not laid out yet and
+      // that block still sits close to the top.
+      var wantRetired = false;
+      if (closing && y > window.innerHeight * 0.6) {
+        wantRetired = closing.getBoundingClientRect().top <= el.offsetHeight + 8;
+      }
 
       if (wantRetired !== retired) {
         retired = wantRetired;
@@ -86,6 +91,7 @@
 
     update();
     scrollTasks.push(update);
+    on(window, 'load', update);
   })();
 
   /* --- Mobile menu ------------------------------------------------------- */
@@ -298,42 +304,26 @@
     update();
   })();
 
-  /* --- Custom cursor -----------------------------------------------------
-     Fine pointers only; the native cursor is never hidden, so a failure here
-     is invisible rather than fatal. */
-  (function cursor() {
-    if (!finePointer.matches || reduceMotion.matches) return;
+  /* --- Contact form -------------------------------------------------------
+     Static hosting has no backend, so the form composes a message in the
+     reader's own mail app. The address is also printed below it, so the
+     section still works if no mail client is configured. */
+  (function contactForm() {
+    var form = document.querySelector('.contact-form');
+    if (!form) return;
 
-    var dot = document.createElement('div');
-    var ring = document.createElement('div');
-    dot.className = 'cursor-dot';
-    ring.className = 'cursor-ring';
-    dot.setAttribute('aria-hidden', 'true');
-    ring.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(dot);
-    document.body.appendChild(ring);
-
-    var mx = 0, my = 0, rx = 0, ry = 0, raf = null;
-
-    function loop() {
-      rx += (mx - rx) * 0.18;
-      ry += (my - ry) * 0.18;
-      dot.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0)';
-      ring.style.transform = 'translate3d(' + rx.toFixed(1) + 'px,' + ry.toFixed(1) + 'px,0)';
-      raf = requestAnimationFrame(loop);
-    }
-
-    on(window, 'pointermove', function (e) {
-      if (e.pointerType === 'touch') { root.classList.remove('has-cursor'); return; }
-      mx = e.clientX; my = e.clientY;
-      root.classList.add('has-cursor');
-      var el = e.target instanceof Element ? e.target : null;
-      root.classList.toggle('cursor-active', Boolean(el && el.closest('a, button, [role="button"], input, textarea, select')));
-      if (!raf) { rx = mx; ry = my; raf = requestAnimationFrame(loop); }
-    }, { passive: true });
-
-    on(document, 'pointerleave', function () { root.classList.remove('has-cursor'); });
-    on(window, 'blur', function () { root.classList.remove('has-cursor'); });
+    on(form, 'submit', function (e) {
+      e.preventDefault();
+      var to = form.dataset.mailto;
+      if (!to) return;
+      var name = (form.querySelector('#cf-name') || {}).value || '';
+      var note = (form.querySelector('#cf-note') || {}).value || '';
+      var subject = name ? name + ' — portfolio enquiry' : 'Portfolio enquiry';
+      var body = note + (name ? '\n\n— ' + name : '');
+      window.location.href = 'mailto:' + to +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(body);
+    });
   })();
 
   /* --- Current year in the footer ---------------------------------------- */
