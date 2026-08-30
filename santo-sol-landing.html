@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Santo Sol — Valentino × Bad Bunny</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crema:#FBF6EA;
+    --ink:#241B12;
+    --gris:#8c8172;
+    --linea:rgba(36,27,18,.13);
+    --rojo:#C21730;
+    --cielo:#3F9FD6;
+    --turquesa:#0E7A72;
+    --coral:#E8622B;
+    --oro:#C79A2E;
+    --ease:cubic-bezier(.16,.8,.24,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--crema);color:var(--ink);
+    font-family:'Inter Tight',sans-serif;
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--ink);color:var(--crema);}
+
+  .grain{
+    position:fixed;inset:0;pointer-events:none;z-index:998;opacity:.05;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .eyebrow{
+    font-family:'Fraunces',serif;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+    font-style:italic;color:var(--gris);
+  }
+  .eyebrow .dot{color:var(--rojo);}
+
+  h1{font-family:'Inter Tight',sans-serif;font-weight:700;line-height:.98;letter-spacing:-.03em;text-transform:lowercase;}
+  h2,h3{font-family:'Fraunces',serif;font-weight:600;line-height:1.02;letter-spacing:-.01em;text-transform:lowercase;}
+  .serif-i{font-family:'Fraunces',serif;font-style:italic;font-weight:400;letter-spacing:0;text-transform:none;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1.5rem clamp(1.4rem,5vw,3.6rem);
+    transition:background .4s var(--ease),padding .4s var(--ease),border-color .4s var(--ease);
+    border-bottom:1px solid transparent;
+  }
+  nav.scrolled{background:rgba(241,237,227,.88);backdrop-filter:blur(10px);padding:1rem clamp(1.4rem,5vw,3.6rem);border-color:var(--linea);}
+  .nav-mark{font-weight:700;font-size:.9rem;letter-spacing:-.01em;text-transform:lowercase;}
+  .nav-dot{width:6px;height:6px;border-radius:50%;background:var(--turquesa);}
+  .nav-right{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;}
+
+  section{position:relative;padding:7rem clamp(1.4rem,7vw,6.5rem);}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- HERO / MASONRY ---------- */
+  .hero{padding-top:0;padding-bottom:3rem;overflow:hidden;}
+  .masonry{
+    position:relative;height:480px;margin-top:-1rem;
+  }
+  .m{
+    position:absolute;border-radius:6px;overflow:hidden;background:#232019;
+    background-size:cover;background-position:center;
+    box-shadow:0 22px 38px rgba(23,21,18,.2);
+    will-change:transform;
+  }
+  .m::after{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.14),transparent 55%);}
+  /* three photo slots — a tall anchor left, a wide companion upper-right, a small grounding accent lower-right */
+  .m1{width:30%;height:100%;left:0;top:0;background-image:url('images/project-santo-sol.jpg');background-position:top center;}
+  .m2{width:36%;height:64%;left:34%;top:-1.5rem;background-image:url('images/project-santo-sol.jpg');background-position:center;}
+  .m3{width:20%;height:40%;right:0;top:52%;background-image:url('images/project-santo-sol.jpg');background-position:top center;}
+
+  .hero-word{position:relative;text-align:center;margin-top:1.6rem;overflow:hidden;}
+  .hero-word h1{font-size:clamp(3.4rem,13vw,9.5rem);}
+  .hero-word .line{overflow:hidden;}
+  .hero-word .line span{display:inline-block;transform:translateY(110%);animation:wordUp .9s var(--ease) forwards;}
+  .hero-word .line:nth-child(1) span{animation-delay:.15s;}
+  .hero-word .line:nth-child(2) span{animation-delay:.3s;}
+  @keyframes wordUp{to{transform:translateY(0);}}
+
+  .hero-sub{text-align:center;margin-top:1.4rem;font-size:clamp(1.05rem,1.8vw,1.3rem);color:var(--gris);
+    opacity:0;animation:riseFade 1s var(--ease) .7s forwards;}
+  .hero-tags{display:flex;justify-content:center;gap:.7rem;margin-top:1.6rem;flex-wrap:wrap;
+    opacity:0;animation:riseFade 1s var(--ease) .85s forwards;}
+  .tag{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--ink);border-radius:100px;padding:.32rem .85rem;}
+  .tag:nth-child(1){border-color:var(--cielo);color:var(--cielo);}
+  .tag:nth-child(2){border-color:var(--coral);color:var(--coral);}
+  @keyframes riseFade{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+  @media (max-width:760px){
+    .masonry{height:280px;}
+    .m3{display:none;}
+  }
+
+  /* ---------- FOLIO (photo block from the left) ---------- */
+  .folio{border-top:1px solid var(--linea);padding:0;}
+  .folio-flex{display:grid;grid-template-columns:42% 1fr;align-items:stretch;}
+  .folio-image{position:relative;overflow:hidden;background:#1a1a1a;}
+  .folio-image img{width:100%;height:100%;object-fit:contain;display:block;}
+  .folio-image::after{content:'';position:absolute;inset:0;background:linear-gradient(165deg,rgba(255,255,255,.14),transparent 55%);pointer-events:none;}
+  .folio-copy{padding:5rem clamp(1.6rem,5vw,4.5rem);align-self:center;}
+  .folio-copy h2{font-size:clamp(1.9rem,3.6vw,2.7rem);}
+  .folio-copy p{margin-top:1.3rem;font-size:.95rem;line-height:1.75;color:var(--gris);max-width:36ch;}
+
+  @media (max-width:920px){
+    .folio-flex{grid-template-columns:1fr;min-height:0;}
+    .folio-image{height:auto;}
+  }
+
+  /* ---------- CROP HEADLINE (overflow) ---------- */
+  .crop-wrap{overflow:hidden;padding:5rem 0;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);}
+  .crop-headline{
+    font-size:clamp(4rem,13.5vw,10rem);white-space:nowrap;padding-left:clamp(1.4rem,7vw,6.5rem);
+  }
+
+  /* ---------- DARK BLOCK ---------- */
+  .darkblock{background:var(--ink);color:var(--crema);display:grid;grid-template-columns:1fr 1fr;padding:0;}
+  .db-copy{padding:6.5rem clamp(1.6rem,5vw,4.5rem);}
+  .db-copy .eyebrow{color:#c8c3b3;}
+  .db-copy h2{color:var(--crema);font-size:clamp(2rem,4vw,3rem);margin-top:.5rem;}
+  .db-copy .serif-i{display:block;color:#c9c3af;font-size:clamp(1.3rem,2.4vw,1.7rem);margin-top:.4rem;}
+  .notes{margin-top:2.2rem;display:flex;flex-direction:column;gap:1.4rem;}
+  .note{border-top:1px solid rgba(241,237,227,.18);padding-top:1.1rem;}
+  .note-top{display:flex;justify-content:space-between;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#9b9686;}
+  .note:nth-child(1) .note-top span:first-child{color:var(--coral);}
+  .note:nth-child(2) .note-top span:first-child{color:var(--rojo);}
+  .note:nth-child(3) .note-top span:first-child{color:var(--oro);}
+  .note-title{font-family:'Fraunces',serif;font-style:italic;font-size:1.25rem;margin-top:.4rem;}
+  .note-desc{font-size:.85rem;color:#a9a494;margin-top:.35rem;line-height:1.6;max-width:40ch;}
+  .db-image{position:relative;background-size:cover;background-position:center;background-image:url('images/project-santo-sol.jpg');min-height:420px;}
+  .db-image::after{content:'';position:absolute;inset:0;background:linear-gradient(165deg,rgba(255,255,255,.14),transparent 55%);}
+
+  @media (max-width:900px){.darkblock{grid-template-columns:1fr;}.db-image{min-height:280px;order:-1;}}
+
+  /* ---------- CLOSING ---------- */
+  .closing{
+    position:relative;text-align:center;overflow:hidden;color:var(--crema);
+    padding-top:9.5rem;padding-bottom:9.5rem;padding-left:0;padding-right:0;
+  }
+  .closing-bg{
+    position:absolute;inset:0;z-index:0;
+    background-size:cover;background-position:center;
+    background-image:
+      linear-gradient(160deg,rgba(255,255,255,.12),transparent 55%),
+      url('images/project-santo-sol.jpg');
+  }
+  .closing-overlay{
+    position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(23,21,18,.25) 0%, rgba(23,21,18,.75) 100%);
+  }
+  .closing-content{position:relative;z-index:2;padding:0 clamp(1.4rem,7vw,6.5rem);max-width:900px;margin:0 auto;}
+  .closing h2{font-size:clamp(2.2rem,7vw,5rem);color:var(--crema);}
+  .closing h2 .serif-i{color:var(--oro);}
+  .cta{
+    display:inline-flex;align-items:center;gap:.7rem;margin-top:2.6rem;padding:1rem 2.2rem;
+    background:var(--crema);color:var(--ink);text-decoration:none;border-radius:100px;
+    font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    transition:transform .35s var(--ease),background .35s var(--ease),color .35s var(--ease);
+  }
+  .cta:hover{background:var(--ink);color:var(--crema);transform:translateY(-2px);}
+
+  footer{
+    padding:2rem clamp(1.4rem,7vw,6.5rem);display:flex;align-items:center;justify-content:space-between;
+    border-top:1px solid var(--linea);font-size:.66rem;letter-spacing:.1em;color:var(--gris);text-transform:uppercase;
+  }
+  @media (max-width:600px){footer{flex-direction:column;gap:.7rem;text-align:center;}section{padding:5rem 1.3rem;}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s !important;transition-duration:.001s !important;}}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<nav id="nav">
+  <div class="nav-mark">valentino</div>
+  <div class="nav-dot"></div>
+  <div class="nav-right">Bad Bunny</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="masonry" id="masonry">
+    <div class="m m1" data-speed="0.05"></div>
+    <div class="m m2" data-speed="0.11"></div>
+    <div class="m m3" data-speed="0.16"></div>
+  </div>
+
+  <div class="hero-word">
+    <h1><span class="line"><span>santo</span></span> <span class="line"><span>sol</span></span></h1>
+  </div>
+  <p class="hero-sub serif-i">Born from the heat, worn without rules.</p>
+  <div class="hero-tags">
+    <span class="tag">Valentino × Bad Bunny</span>
+    <span class="tag">Unisex Fragrance</span>
+  </div>
+</section>
+
+<!-- FOLIO -->
+<section class="folio">
+  <div class="folio-flex">
+    <div class="folio-image reveal">
+      <img src="images/project-santo-sol.jpg" alt="Santo Sol lifestyle photo" />
+    </div>
+    <div class="folio-copy reveal">
+      <span class="eyebrow"><span class="dot">·</span> The Story</span>
+      <h2>heat, rhythm<br>&amp; identity</h2>
+      <p>Santo Sol is a unisex fragrance collaboration between Bad Bunny and Valentino, inspired by the warmth, color, and energy of Puerto Rico — where refined luxury meets bold self-expression.</p>
+      <p>More than a celebrity fragrance, it's a personal expression of culture, memory, and confidence.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CROP HEADLINE -->
+<div class="crop-wrap">
+  <h2 class="crop-headline reveal">discover santo sol</h2>
+</div>
+
+<!-- DARK BLOCK -->
+<section class="darkblock" style="padding:0;">
+  <div class="db-copy reveal">
+    <span class="eyebrow" style="color:#c8c3b3;">The Composition</span>
+    <h2>what's inside</h2>
+    <span class="serif-i">top, heart &amp; base</span>
+    <div class="notes">
+      <div class="note">
+        <div class="note-top"><span>Top</span><span>01</span></div>
+        <div class="note-title">Citrus &amp; Bergamot</div>
+        <div class="note-desc">The island's sunlight and tropical freshness.</div>
+      </div>
+      <div class="note">
+        <div class="note-top"><span>Heart</span><span>02</span></div>
+        <div class="note-title">Rose, Hibiscus &amp; Sea Salt</div>
+        <div class="note-desc">Softness, confidence, and the air of the coast.</div>
+      </div>
+      <div class="note">
+        <div class="note-top"><span>Base</span><span>03</span></div>
+        <div class="note-title">Amber, Musk, Vanilla &amp; Warm Woods</div>
+        <div class="note-desc">Lingering heat, music-filled nights, the feeling of home.</div>
+      </div>
+    </div>
+  </div>
+  <div class="db-image"></div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="closing-bg"></div>
+  <div class="closing-overlay"></div>
+  <div class="closing-content">
+    <h2 class="reveal">born from the heat<br><span class="serif-i">worn without rules</span></h2>
+    <a href="valentino-bad-bunny-campaign.html" class="cta reveal">Back to Case Study</a>
+  </div>
+</section>
+
+<footer>
+  <div>Valentino</div>
+  <div>© 2026 Santo Sol</div>
+  <div>Bad Bunny</div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+
+  // parallax on hero masonry
+  const mEls = document.querySelectorAll('.m[data-speed]');
+  function parallax(){
+    const y = window.scrollY;
+    mEls.forEach(el => {
+      const speed = parseFloat(el.dataset.speed);
+      el.style.transform = `translateY(${y * speed}px)`;
+    });
+  }
+  window.addEventListener('scroll', parallax);
+  parallax();
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

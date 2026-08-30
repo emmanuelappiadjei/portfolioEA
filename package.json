@@ -1,0 +1,11 @@
+{
+  "name": "emmanuel-appiadjei-portfolio",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Static portfolio for Emmanuel Appiadjei — creative and content marketing.",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "check": "node tools/check.mjs",
+    "start": "npx --yes http-server -p 8080 -c-1 ."
+  }
+}

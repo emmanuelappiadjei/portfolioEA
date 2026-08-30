@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>peacefest — september 23, nashville tn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#DFFF00; --red:#FF130D; --black:#0A0A0A; --white:#FFFFFF;
+    --meta: 'Instrument Sans', sans-serif;
+    --disp: 'Space Grotesk', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--white);color:var(--black);font-family:var(--meta);overflow-x:hidden;}
+  img,video{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--red);color:var(--white);}
+
+  .meta{font-family:var(--meta);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;}
+  .disp{font-family:var(--disp);font-weight:700;}
+
+  /* ---------- PEACE SIGN GRAPHIC ---------- */
+  .peace{width:64px;height:64px;flex-shrink:0;transition:transform .4s cubic-bezier(.2,.8,.3,1);}
+  .peace:hover{transform:rotate(28deg);}
+  .peace circle{fill:none;stroke:currentColor;stroke-width:5;}
+  .peace line{stroke:currentColor;stroke-width:5;}
+
+  /* ---------- HEADER ---------- */
+  .pf-header{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px clamp(20px,4vw,44px);
+    mix-blend-mode:difference;
+  }
+  .pf-header img{height:26px;width:auto;filter:invert(1) grayscale(1) brightness(2);}
+  .pf-nav{display:flex;align-items:center;gap:clamp(18px,3vw,36px);}
+  .pf-nav a{font-family:var(--meta);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--white);border-bottom:1px solid transparent;padding-bottom:2px;transition:border-color .2s;}
+  .pf-nav a:hover{border-color:var(--white);}
+  .pf-header-date{font-family:var(--meta);font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--white);opacity:.85;}
+
+  @media (max-width:720px){ .pf-nav{display:none;} .pf-header-date{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .pf-hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:var(--black);}
+  .pf-hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .pf-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.15) 55%,rgba(0,0,0,.75) 100%);}
+
+  .pf-hero-word{
+    position:absolute;top:clamp(64px,14vh,140px);left:clamp(-28px,-2vw,-10px);z-index:2;
+    font-family:var(--disp);font-weight:700;color:var(--lime);
+    font-size:clamp(84px,15vw,240px);line-height:.82;letter-spacing:-.05em;
+    text-transform:lowercase;
+    pointer-events:none;
+  }
+
+  .pf-hero-meta{
+    position:absolute;right:clamp(20px,4vw,48px);bottom:clamp(96px,14vh,160px);z-index:2;
+    text-align:right;color:var(--white);
+  }
+  .pf-hero-meta .line1{font-family:var(--disp);font-weight:700;font-size:clamp(28px,4vw,52px);letter-spacing:-.02em;line-height:1;}
+  .pf-hero-meta .line2{font-family:var(--meta);font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-top:10px;opacity:.85;}
+
+  .pf-hero-featuring{
+    position:absolute;left:clamp(20px,4vw,48px);bottom:clamp(36px,7vh,64px);z-index:2;color:var(--white);
+  }
+  .pf-hero-featuring .meta{opacity:.7;margin-bottom:6px;}
+  .pf-hero-featuring .name{font-family:var(--disp);font-weight:700;font-size:clamp(20px,2.4vw,30px);letter-spacing:.02em;}
+
+  .pf-hero-peace{
+    position:absolute;right:clamp(-30px,-3vw,-10px);top:38%;z-index:2;color:var(--lime);
+    width:clamp(110px,13vw,180px);height:clamp(110px,13vw,180px);
+    opacity:.9;
+  }
+
+  /* ---------- SECTION 01 — STATEMENT ---------- */
+  .pf-statement{background:var(--lime);padding:clamp(70px,12vw,140px) clamp(20px,4vw,60px);position:relative;}
+  .pf-statement h2{
+    font-family:var(--disp);font-weight:700;color:var(--black);
+    font-size:clamp(48px,10vw,150px);line-height:.9;letter-spacing:-.04em;
+    max-width:1100px;
+  }
+  .pf-statement h2 span{color:var(--red);}
+  .pf-statement .rule{width:120px;height:6px;background:var(--red);margin-top:36px;}
+
+  /* ---------- SECTION 02 — LINEUP ---------- */
+  .pf-lineup{padding:clamp(70px,10vw,120px) clamp(20px,4vw,60px) 0;}
+  .pf-lineup-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:clamp(36px,6vw,64px);flex-wrap:wrap;gap:16px;}
+  .pf-lineup-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(40px,7vw,84px);letter-spacing:-.03em;text-transform:lowercase;}
+  .pf-lineup-head .meta{color:#8a8a85;}
+
+  .pf-lineup-grid{
+    display:grid;grid-template-columns:repeat(12,1fr);gap:16px;align-items:start;margin-bottom:clamp(50px,8vw,90px);
+  }
+  .pf-lu-feature{grid-column:1/8;position:relative;}
+  .pf-lu-feature img{width:100%;aspect-ratio:16/11;object-fit:cover;filter:grayscale(15%);}
+  .pf-lu-feature .pf-lu-name{position:absolute;left:24px;bottom:-14px;background:var(--black);color:var(--white);padding:10px 22px;font-family:var(--disp);font-weight:700;font-size:clamp(18px,2vw,26px);text-transform:lowercase;}
+
+  .pf-lu-side{grid-column:8/13;display:flex;flex-direction:column;gap:16px;}
+  .pf-lu-side .pf-lu-item{position:relative;}
+  .pf-lu-side img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(15%);}
+  .pf-lu-side .pf-lu-name{margin-top:10px;font-family:var(--disp);font-weight:700;font-size:16px;text-transform:lowercase;}
+
+  .pf-lu-bleed{grid-column:1/6;margin-top:8px;position:relative;}
+  .pf-lu-bleed img{width:112%;aspect-ratio:3/4;object-fit:cover;filter:grayscale(15%);}
+  .pf-lu-bleed .pf-lu-name{margin-top:10px;font-family:var(--disp);font-weight:700;font-size:16px;text-transform:lowercase;}
+
+  .pf-lu-morewrap{grid-column:6/13;align-self:center;padding-left:clamp(0px,3vw,40px);}
+
+  .pf-lu-more{background:var(--black);color:var(--white);padding:clamp(50px,8vw,90px) clamp(20px,4vw,60px);position:relative;overflow:hidden;}
+  .pf-lu-more .peace{position:absolute;color:var(--lime);opacity:.9;}
+  .pf-lu-more .peace.p1{top:-10px;left:-10px;width:90px;height:90px;}
+  .pf-lu-more .peace.p2{bottom:20px;right:24px;width:130px;height:130px;transform:rotate(14deg);}
+  .pf-lu-more ul{list-style:none;position:relative;z-index:2;}
+  .pf-lu-more li{
+    font-family:var(--disp);font-weight:700;text-transform:lowercase;letter-spacing:-.02em;
+    font-size:clamp(34px,6.5vw,84px);line-height:1.06;
+    border-bottom:1px solid rgba(255,255,255,.12);
+    padding:10px 0;
+  }
+  .pf-lu-more li:last-of-type{border-bottom:none;}
+  .pf-lu-more .and-more{margin-top:22px;color:var(--lime);font-size:clamp(24px,4vw,44px);}
+
+  /* ---------- SECTION 03 — EXPERIENCE ---------- */
+  .pf-exp{padding:clamp(70px,10vw,120px) clamp(20px,4vw,60px);}
+  .pf-exp-head{margin-bottom:clamp(40px,6vw,64px);}
+  .pf-exp-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(40px,7vw,84px);letter-spacing:-.03em;text-transform:lowercase;}
+  .pf-exp-head .red{color:var(--red);}
+
+  .pf-exp-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;}
+  .pf-exp-block{position:relative;overflow:hidden;}
+  .pf-exp-block img{width:100%;height:100%;object-fit:cover;filter:grayscale(10%);transition:transform .6s ease;}
+  .pf-exp-block:hover img{transform:scale(1.04);}
+  .pf-exp-tag{
+    position:absolute;left:16px;bottom:16px;background:var(--white);color:var(--black);
+    font-family:var(--meta);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    padding:7px 14px;
+  }
+  .pf-exp-tag.dark{background:var(--black);color:var(--white);}
+
+  .pf-eb1{grid-column:1/6;aspect-ratio:4/5;}
+  .pf-eb2{grid-column:6/9;aspect-ratio:3/4;margin-top:60px;}
+  .pf-eb3{grid-column:9/13;aspect-ratio:1/1;}
+  .pf-eb4{grid-column:1/4;aspect-ratio:1/1;margin-top:24px;}
+  .pf-eb5{grid-column:4/9;aspect-ratio:16/9;margin-top:24px;}
+  .pf-eb6{grid-column:9/13;aspect-ratio:3/4;margin-top:-40px;}
+
+  @media (max-width:900px){
+    .pf-exp-grid{grid-template-columns:1fr 1fr;}
+    .pf-eb1,.pf-eb2,.pf-eb3,.pf-eb4,.pf-eb5,.pf-eb6{grid-column:span 1;margin-top:0;}
+    .pf-eb5{grid-column:span 2;}
+  }
+
+  /* ---------- SECTION 04 — DATE / LOCATION ---------- */
+  .pf-date{background:var(--lime);position:relative;padding:clamp(70px,14vw,160px) clamp(20px,4vw,60px);overflow:hidden;text-align:center;}
+  .pf-date .peace{position:absolute;color:rgba(10,10,10,.08);}
+  .pf-date .peace.d1{width:60vw;height:60vw;max-width:640px;max-height:640px;top:-18%;left:-14%;transform:rotate(-10deg);}
+  .pf-date .peace.d2{width:40vw;height:40vw;max-width:420px;max-height:420px;bottom:-16%;right:-10%;transform:rotate(20deg);}
+  .pf-date-num{position:relative;z-index:2;font-family:var(--disp);font-weight:700;color:var(--black);font-size:clamp(72px,17vw,260px);line-height:.86;letter-spacing:-.04em;}
+  .pf-date-loc{position:relative;z-index:2;font-family:var(--disp);font-weight:700;color:var(--red);font-size:clamp(28px,5vw,64px);letter-spacing:-.02em;margin-top:8px;text-transform:lowercase;}
+
+  /* ---------- SECTION 05 — MANIFESTO ---------- */
+  .pf-manifesto{background:var(--black);color:var(--white);display:grid;grid-template-columns:1fr 1fr;min-height:70vh;}
+  .pf-man-photo{position:relative;overflow:hidden;}
+  .pf-man-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(30%) contrast(1.05);}
+  .pf-man-copy{display:flex;flex-direction:column;justify-content:center;padding:clamp(40px,6vw,90px);}
+  .pf-man-copy .meta{color:var(--lime);margin-bottom:24px;}
+  .pf-man-copy h2{font-family:var(--disp);font-weight:700;font-size:clamp(32px,4.6vw,58px);line-height:1.06;letter-spacing:-.02em;max-width:480px;}
+
+  @media (max-width:820px){
+    .pf-manifesto{grid-template-columns:1fr;}
+    .pf-man-photo{min-height:340px;}
+    .pf-man-copy{padding:48px 24px 64px;}
+  }
+
+  /* ---------- STICKY TICKET STICKER ---------- */
+  .pf-sticker{
+    position:fixed;right:clamp(16px,3vw,32px);bottom:clamp(16px,3vw,32px);z-index:250;
+  }
+  .pf-sticker a{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:clamp(96px,10vw,128px);height:clamp(96px,10vw,128px);border-radius:50%;
+    background:var(--lime);color:var(--black);
+    font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.02em;text-transform:lowercase;text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.28);
+    transform:rotate(-8deg);transition:transform .3s cubic-bezier(.2,.8,.2,1),background .2s;
+    border:2px solid var(--black);
+  }
+  .pf-sticker a:hover{transform:rotate(0deg) scale(1.06);background:var(--red);color:var(--white);}
+
+  @media (max-width:600px){ .pf-sticker{right:14px;bottom:14px;} }
+
+  /* Inline CTA after lineup */
+  .pf-cta-inline{display:flex;justify-content:center;padding:0 20px clamp(70px,10vw,110px);}
+  .pf-cta-inline a{
+    display:inline-block;background:var(--red);color:var(--white);
+    font-family:var(--disp);font-weight:700;font-size:clamp(20px,2.6vw,28px);text-transform:lowercase;
+    padding:20px 56px;border-radius:999px;transform:rotate(-2deg);
+    transition:transform .25s ease,background .25s ease;
+  }
+  .pf-cta-inline a:hover{transform:rotate(0deg) scale(1.04);background:var(--black);}
+
+  /* ---------- FOOTER ---------- */
+  .pf-footer{background:var(--red);color:var(--white);padding:clamp(60px,9vw,100px) clamp(20px,4vw,60px) 36px;position:relative;overflow:hidden;}
+  .pf-footer .peace{position:absolute;color:rgba(255,255,255,.12);}
+  .pf-footer .peace.f1{width:220px;height:220px;left:-40px;bottom:-30px;}
+  .pf-foot-word{font-family:var(--disp);font-weight:700;font-size:clamp(52px,10vw,140px);letter-spacing:-.04em;text-transform:lowercase;line-height:1;position:relative;z-index:2;}
+  .pf-foot-row{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;margin-top:clamp(30px,5vw,54px);position:relative;z-index:2;}
+  .pf-foot-social{display:flex;gap:22px;}
+  .pf-foot-social a{font-family:var(--meta);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:2px;}
+  .pf-foot-social a:hover{border-color:var(--white);}
+  .pf-foot-meta{font-family:var(--meta);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;opacity:.85;text-align:right;}
+  .pf-foot-bottom{margin-top:44px;padding-top:20px;border-top:1px solid rgba(255,255,255,.18);font-family:var(--meta);font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.6;position:relative;z-index:2;}
+
+  @media (max-width:600px){
+    .pf-foot-row{flex-direction:column;align-items:flex-start;}
+    .pf-foot-meta{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="pf-header">
+    <a href="index.html#landing" aria-label="Back to Emmanuel Appiadjei's portfolio"><img src="images/peacefest/logo-red.png" alt="peacefest" /></a>
+    <div class="pf-header-date">sept 23 &nbsp;·&nbsp; nashville, tn</div>
+    <nav class="pf-nav">
+      <a href="#lineup">lineup</a>
+      <a href="#experience">info</a>
+      <a href="#tickets">tickets</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="pf-hero">
+    <video autoplay muted loop playsinline poster="images/peacefest/hero-poster.jpg">
+      <source src="images/peacefest/peacefest-hero.mp4" type="video/mp4" />
+    </video>
+
+    <div class="pf-hero-word">peacefest</div>
+
+    <svg class="peace pf-hero-peace" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="42"/>
+      <line x1="50" y1="8" x2="50" y2="92"/>
+      <line x1="50" y1="50" x2="22" y2="86"/>
+      <line x1="50" y1="50" x2="78" y2="86"/>
+    </svg>
+
+    <div class="pf-hero-featuring">
+      <div class="meta">featuring</div>
+      <div class="name">thundercat</div>
+    </div>
+
+    <div class="pf-hero-meta">
+      <div class="line1">09 · 23</div>
+      <div class="line2">nashville, tn</div>
+    </div>
+  </section>
+
+  <!-- SECTION 01: STATEMENT -->
+  <section class="pf-statement">
+    <h2>come as<br>you are.<br><span>leave</span> different.</h2>
+    <div class="rule"></div>
+  </section>
+
+  <!-- SECTION 02: LINEUP -->
+  <section class="pf-lineup" id="lineup">
+    <div class="pf-lineup-head">
+      <h2>the lineup</h2>
+      <div class="meta">sept 23 / nashville tn</div>
+    </div>
+
+    <div class="pf-lineup-grid">
+      <div class="pf-lu-feature">
+        <img src="images/peacefest/thundercat.jpg" alt="Thundercat" style="background:#111;" />
+        <div class="pf-lu-name">thundercat</div>
+      </div>
+
+      <div class="pf-lu-side">
+        <div class="pf-lu-item">
+          <img src="images/peacefest/steve-lacy.jpg" alt="Steve Lacy" style="background:#1c1c1c;" />
+          <div class="pf-lu-name">steve lacy</div>
+        </div>
+        <div class="pf-lu-item">
+          <img src="images/peacefest/the-internet.jpg" alt="The Internet" style="background:#1c1c1c;" />
+          <div class="pf-lu-name">the internet</div>
+        </div>
+      </div>
+
+      <div class="pf-lu-bleed">
+        <img src="images/peacefest/teezo-touchdown.jpg" alt="Teezo Touchdown" style="background:#111;" />
+        <div class="pf-lu-name">teezo touchdown</div>
+      </div>
+
+      <div class="pf-lu-morewrap">
+        <div class="pf-lu-item">
+          <img src="images/peacefest/men-i-trust.jpg" alt="Men I Trust" style="background:#1c1c1c;aspect-ratio:4/3;width:100%;object-fit:cover;" />
+          <div class="pf-lu-name">men i trust</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pf-lu-more">
+      <svg class="peace p1" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42"/><line x1="50" y1="8" x2="50" y2="92"/><line x1="50" y1="50" x2="22" y2="86"/><line x1="50" y1="50" x2="78" y2="86"/></svg>
+      <svg class="peace p2" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42"/><line x1="50" y1="8" x2="50" y2="92"/><line x1="50" y1="50" x2="22" y2="86"/><line x1="50" y1="50" x2="78" y2="86"/></svg>
+      <ul>
+        <li>toro y moi</li>
+        <li>blood orange</li>
+        <li>ravyn lenae</li>
+        <li>dijon</li>
+        <li>fousheé</li>
+      </ul>
+      <div class="and-more">+ more.</div>
+    </div>
+
+    <div class="pf-cta-inline">
+      <a href="#tickets">get tickets</a>
+    </div>
+  </section>
+
+  <!-- SECTION 03: EXPERIENCE -->
+  <section class="pf-exp" id="experience">
+    <div class="pf-exp-head">
+      <h2>more than a <span class="red">stage.</span></h2>
+    </div>
+    <div class="pf-exp-grid">
+      <div class="pf-exp-block pf-eb1"><img src="images/peacefest/experience-01.jpg" alt="Friends sitting in the grass at Peacefest" style="background:#e9e9e4;" /><div class="pf-exp-tag">music</div></div>
+      <div class="pf-exp-block pf-eb2"><img src="images/peacefest/experience-02.jpg" alt="Flash photography at night" style="background:#111;" /><div class="pf-exp-tag dark">late night</div></div>
+      <div class="pf-exp-block pf-eb3"><img src="images/peacefest/experience-03.jpg" alt="Close-up fashion detail" style="background:#e9e9e4;" /><div class="pf-exp-tag">fashion</div></div>
+      <div class="pf-exp-block pf-eb4"><img src="images/peacefest/experience-04.jpg" alt="Food vendor at Peacefest" style="background:#e9e9e4;" /><div class="pf-exp-tag">food</div></div>
+      <div class="pf-exp-block pf-eb5"><img src="images/peacefest/experience-05.jpg" alt="Crowd between performances" style="background:#111;" /><div class="pf-exp-tag dark">community</div></div>
+      <div class="pf-exp-block pf-eb6"><img src="images/peacefest/experience-06.jpg" alt="Posters and stickers signage" style="background:#e9e9e4;" /><div class="pf-exp-tag">art</div></div>
+    </div>
+  </section>
+
+  <!-- SECTION 04: DATE / LOCATION -->
+  <section class="pf-date" id="info">
+    <svg class="peace d1" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42"/><line x1="50" y1="8" x2="50" y2="92"/><line x1="50" y1="50" x2="22" y2="86"/><line x1="50" y1="50" x2="78" y2="86"/></svg>
+    <svg class="peace d2" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42"/><line x1="50" y1="8" x2="50" y2="92"/><line x1="50" y1="50" x2="22" y2="86"/><line x1="50" y1="50" x2="78" y2="86"/></svg>
+    <div class="pf-date-num">09.23</div>
+    <div class="pf-date-loc">nashville, tn</div>
+  </section>
+
+  <!-- SECTION 05: MANIFESTO -->
+  <section class="pf-manifesto">
+    <div class="pf-man-photo">
+      <img src="images/peacefest/manifesto.jpg" alt="Candid festival moment" style="background:#1c1c1c;" />
+    </div>
+    <div class="pf-man-copy">
+      <div class="meta">the idea</div>
+      <h2>a little louder.<br>a little stranger.<br>a little more<br>together.</h2>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="pf-footer" id="tickets">
+    <svg class="peace f1" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42"/><line x1="50" y1="8" x2="50" y2="92"/><line x1="50" y1="50" x2="22" y2="86"/><line x1="50" y1="50" x2="78" y2="86"/></svg>
+    <div class="pf-foot-word">peacefest</div>
+    <div class="pf-foot-row">
+      <div class="pf-foot-social">
+        <a href="#" aria-label="Peacefest Instagram placeholder">instagram</a>
+        <a href="#" aria-label="Peacefest TikTok placeholder">tiktok</a>
+        <a href="#" aria-label="Peacefest YouTube placeholder">youtube</a>
+      </div>
+      <div class="pf-foot-meta">nashville, tn<br>sept 23</div>
+    </div>
+    <div class="pf-foot-bottom">© 2026 peacefest</div>
+  </footer>
+
+  <!-- STICKY TICKET STICKER -->
+  <div class="pf-sticker">
+    <a href="#tickets">get<br>tickets</a>
+  </div>
+
+  <script>
+    // Header contrast toggle on scroll (subtle, restrained)
+    const header = document.querySelector('.pf-header');
+    window.addEventListener('scroll', () => {
+      header.style.mixBlendMode = window.scrollY > window.innerHeight * 0.85 ? 'normal' : 'difference';
+      header.style.color = window.scrollY > window.innerHeight * 0.85 ? '#0A0A0A' : '';
+    }, { passive: true });
+  </script>
+
+</body>
+</html>

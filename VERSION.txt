@@ -1,0 +1,16 @@
+EMMANUEL APPIADJEI PORTFOLIO
+Release: 3.0.0 — editorial rebuild
+Direction: cinematic dark editorial (near-black, graphite, off-white, restrained violet)
+
+Stack: static HTML + CSS + JS, no runtime dependencies.
+Build: node tools/build.mjs   (renders shared partials from assets/data/site.json)
+Check: node tools/check.mjs   (links, assets, anchors, ids, alt text)
+
+Pages:
+- index.html, work.html, landing-pages.html, emails.html, about.html, contact.html
+- hfma-annual.html, family-carnival-campaign.html,
+  artist-edition-campaign.html, valentino-bad-bunny-campaign.html
+- landing-mahjong-social.html, landing-executive-dinner.html,
+  landing-peacefest.html, peace-grounds.html, santo-sol-landing.html
+- email-peacefest.html, email-peacegrounds.html, email-hfma-track.html,
+  mahjong-email-preview.html
