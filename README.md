@@ -150,10 +150,10 @@ Defined once as custom properties at the top of `assets/css/site.css`:
 | `--gray-dark` | `#2a292e` | Frames, media grounds |
 | `--white` | `#f4f3f2` | Type on dark, light surfaces |
 | `--gray-light` | `#d2cfd5` | Light-surface media ground |
-| `--body-dark` | `#b8b3c0` | Body copy on dark surfaces |
-| `--body-light` | `#454149` | Body copy on light surfaces |
-| `--purple` | `#81749f` | Focus rings, one accent per section |
-| `--purple-soft` | `#aaa0bc` | Tint-surface body copy, accent word |
+| `--body-dark` | `#b6b2af` | Body copy on dark surfaces |
+| `--body-light` | `#454341` | Body copy on light surfaces |
+| `--accent` | `#e2542b` | Focus rings, one accent per section |
+| `--accent-soft` | `#f2a184` | Accent word, the closing headline wash |
 
 ### Surfaces
 
@@ -188,13 +188,13 @@ opaque background, or the blend stops working.
 
 ### Hero safe zone
 
-The hero name is never allowed to touch the portrait's face. The face position
+Nothing in the hero is allowed to touch the portrait's face. The face position
 is measured from the source file rather than estimated — the lit features
 occupy x 58.9–70.8% and y 36.3–65.6%; everything left of 52% and above 34% is
 studio black. `--hero-focus-x`, `--hero-media-top`, and `--hero-safe-width` are
 set per breakpoint from those numbers, and a Playwright check maps the face box
 through the `object-fit: cover` geometry at nine viewport sizes and asserts no
-text element intersects it.
+text element — including the header and the EA monogram — intersects it.
 
 ### Motion
 

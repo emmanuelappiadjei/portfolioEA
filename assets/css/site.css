@@ -14,10 +14,10 @@
   --gray-dark: #2a292e;
   --white: #f4f3f2;
   --gray-light: #d2cfd5;
-  --body-dark: #b8b3c0;   /* body copy on dark surfaces */
-  --body-light: #454149;  /* body copy on light surfaces */
-  --purple: #81749f;
-  --purple-soft: #aaa0bc;
+  --body-dark: #b6b2af;   /* body copy on dark surfaces */
+  --body-light: #454341;  /* body copy on light surfaces */
+  --accent: #e2542b;
+  --accent-soft: #f2a184;
 
   /* Type */
   --font-display: "Inter Tight", "Inter", system-ui, sans-serif;
@@ -95,16 +95,16 @@
   --media-ground: var(--gray-light);
 }
 
-/* A desaturated purple-grey, used once or twice per page as a tonal shift. */
+/* A warm near-black, used once or twice per page as a tonal shift. */
 [data-surface="tint"] {
-  --surface: #14131a;
+  --surface: #16130f;
   --ink: var(--white);
-  --ink-body: var(--purple-soft);
-  --ink-dim: color-mix(in srgb, var(--purple-soft) 74%, transparent);
-  --ink-faint: color-mix(in srgb, var(--purple-soft) 42%, transparent);
-  --hairline: color-mix(in srgb, var(--purple-soft) 20%, transparent);
-  --hairline-soft: color-mix(in srgb, var(--purple-soft) 10%, transparent);
-  --media-ground: #1d1b25;
+  --ink-body: #c0b6ae;
+  --ink-dim: color-mix(in srgb, #c0b6ae 76%, transparent);
+  --ink-faint: color-mix(in srgb, #c0b6ae 44%, transparent);
+  --hairline: color-mix(in srgb, var(--white) 15%, transparent);
+  --hairline-soft: color-mix(in srgb, var(--white) 8%, transparent);
+  --media-ground: #221d18;
 }
 
 /* 2 — Base --------------------------------------------------------------- */
@@ -165,12 +165,12 @@ button {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--purple) 62%, transparent);
+  background: color-mix(in srgb, var(--accent) 62%, transparent);
   color: var(--white);
 }
 
 :focus-visible {
-  outline: 2px solid var(--purple);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -401,26 +401,19 @@ p strong { color: var(--ink); font-weight: 560; }
 .site-header a,
 .site-header button { pointer-events: auto; }
 
-/* Monogram — plain type, no container of any kind. */
+/* Wordmark — the full name in plain type, no container of any kind. */
 .brand {
   display: inline-flex;
-  align-items: flex-start;
+  align-items: baseline;
   flex: none;
   font-family: var(--font-display);
-  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  font-size: clamp(1.05rem, 1.7vw, 1.7rem);
   font-weight: 700;
   letter-spacing: -0.045em;
   line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
   color: currentColor;
-}
-
-.brand sup {
-  font-size: 0.42em;
-  line-height: 1;
-  margin-left: 0.12em;
-  transform: translateY(0.15em);
-  letter-spacing: 0;
-  font-weight: 600;
 }
 
 .nav {
@@ -438,7 +431,10 @@ p strong { color: var(--ink); font-weight: 560; }
   letter-spacing: 0.01em;
   white-space: nowrap;
   color: currentColor;
-  height: 1.35em;
+  /* Tall enough to clear descenders — a tighter box clipped the g in
+     "Landing Pages" against the roll's overflow. */
+  line-height: 1.6;
+  height: 1.6em;
 }
 
 /* Vertical text-roll: the label steps up and its copy rises into place. */
@@ -453,7 +449,7 @@ p strong { color: var(--ink); font-weight: 560; }
 }
 
 .nav__link:hover span,
-.nav__link:focus-visible span { transform: translateY(-1.35em); }
+.nav__link:focus-visible span { transform: translateY(-1.6em); }
 
 .nav__link[aria-current="page"] { opacity: 1; }
 .nav__link:not([aria-current="page"]) { opacity: 0.62; }
@@ -464,7 +460,7 @@ p strong { color: var(--ink); font-weight: 560; }
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -7px;
+  bottom: -3px;
   width: 4px;
   height: 4px;
   margin-left: -2px;
@@ -588,7 +584,7 @@ p strong { color: var(--ink); font-weight: 560; }
 .mobile-menu__link span { font-family: var(--font-body); }
 .mobile-menu__link:hover,
 .mobile-menu__link[aria-current="page"] { color: var(--ink); }
-.mobile-menu__link[aria-current="page"] span { color: var(--purple-soft); }
+.mobile-menu__link[aria-current="page"] span { color: var(--accent-soft); }
 
 .mobile-menu__foot {
   margin-top: clamp(24px, 5vw, 44px);
@@ -648,61 +644,24 @@ p strong { color: var(--ink); font-weight: 560; }
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  padding-top: clamp(76px, 11vh, 118px);
-  padding-bottom: clamp(20px, 3.4vh, 40px);
+  padding-top: clamp(84px, 12vh, 130px);
+  padding-bottom: clamp(24px, 4vh, 48px);
 }
-
-.hero__top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: clamp(16px, 3vw, 48px);
-}
-
-.hero__top > .label {
-  text-align: right;
-  padding-top: clamp(10px, 2.2vh, 26px);
-  flex: none;
-}
-
-/* Full name across the top. Laid out as inline words so it sits on one line
-   where there is room and wraps on narrow screens, instead of being capped to
-   a width that clipped the last letter. */
-.hero__name {
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 0.22em;
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.055em;
-  line-height: 0.86;
-  text-transform: uppercase;
-  color: var(--white);
-  font-size: clamp(2.6rem, 7.6vw, 7.4rem);
-}
-
-.hero__name .line {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.06em;
-}
-
-.hero__name .line > span { display: block; will-change: transform; }
 
 /* Monogram watermark sitting with the portrait, well under the type. */
 .hero__monogram {
   position: absolute;
   z-index: -1;
-  left: var(--gutter);
-  top: 36%;
+  /* Sits against the shoulder, clear of the face at every breakpoint. */
+  left: 26%;
+  top: 30%;
   font-family: var(--font-display);
-  font-size: clamp(5rem, 15vw, 14rem);
+  font-size: clamp(4.5rem, 13vw, 12rem);
   font-weight: 700;
   letter-spacing: -0.06em;
   line-height: 0.8;
   color: var(--white);
-  opacity: 0.075;
+  opacity: 0.1;
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
@@ -755,10 +714,8 @@ p strong { color: var(--ink); font-weight: 560; }
   :root { --hero-focus-x: 58%; }
 }
 
-/* Narrow: the name wraps to two lines and runs larger. */
 @media (max-width: 700px) {
-  .hero__name { font-size: clamp(2.5rem, 12.5vw, 4.4rem); }
-  .hero__monogram { top: 30%; font-size: clamp(4rem, 26vw, 9rem); opacity: 0.085; }
+  .hero__monogram { left: 6%; top: 26%; font-size: clamp(4rem, 24vw, 9rem); opacity: 0.11; }
 }
 
 /* Phone: the portrait takes the lower frame and the name stacks above the
@@ -808,7 +765,7 @@ p strong { color: var(--ink); font-weight: 560; }
 .statement__type .line:nth-child(2) > span { padding-left: clamp(20px, 9vw, 190px); }
 .statement__type .line:nth-child(3) > span { padding-left: clamp(40px, 21vw, 430px); }
 
-.statement__accent { color: var(--purple-soft); }
+.statement__accent { color: var(--accent-soft); }
 
 .statement__type .line {
   display: block;
@@ -1005,10 +962,10 @@ p strong { color: var(--ink); font-weight: 560; }
   font-size: 11px;
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
-  color: var(--purple-soft);
+  color: var(--accent-soft);
 }
 
-[data-surface="light"] .work-piece__result i { color: var(--purple); }
+[data-surface="light"] .work-piece__result i { color: var(--accent); }
 
 .work-piece__cta {
   display: inline-flex;
@@ -1042,7 +999,7 @@ p strong { color: var(--ink); font-weight: 560; }
 
 @media (hover: hover) and (pointer: fine) {
   .work-piece:hover .work-piece__media img { transform: scale(1.045); }
-  .work-piece:hover .work-piece__no { color: var(--purple-soft); }
+  .work-piece:hover .work-piece__no { color: var(--accent-soft); }
   .work-piece:hover .work-piece__cta::after { transform: scaleX(1); }
   .work-piece:hover .work-piece__title { transform: translateX(clamp(4px, 0.6vw, 12px)); }
   .work-piece--flip:hover .work-piece__title { transform: translateX(clamp(-12px, -0.6vw, -4px)); }
@@ -1378,25 +1335,47 @@ p strong { color: var(--ink); font-weight: 560; }
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.9);
 }
 
-/* Photographic layer that sits under scrolling biography copy. */
+/* Photographic panel held to one side, so a portrait-format file is never
+   stretched across a wide band and cropped through the head. */
 .portrait-bleed {
   position: relative;
   overflow: hidden;
-  min-height: clamp(420px, 74vh, 760px);
-  display: flex;
-  align-items: flex-end;
+  min-height: clamp(460px, 84vh, 860px);
+  display: grid;
+  align-content: center;
+}
+
+.portrait-bleed picture {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 54%;
 }
 
 .portrait-bleed img {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 62% 24%;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 26%, #000 66%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 26%, #000 66%, transparent 100%);
+  object-position: 50% 10%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 34%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 34%);
   will-change: transform;
+}
+
+/* The copy block keeps the page gutter; only its lines are measured, so it
+   sits at the left edge rather than being centred by .shell's auto margins. */
+.portrait-bleed__copy > * { max-width: min(46ch, 52%); }
+
+@media (max-width: 860px) {
+  .portrait-bleed { min-height: clamp(520px, 92vh, 820px); align-content: end; }
+  .portrait-bleed picture { width: 100%; }
+  .portrait-bleed img {
+    object-position: 50% 4%;
+    -webkit-mask-image: linear-gradient(to bottom, #000 42%, transparent 96%);
+    mask-image: linear-gradient(to bottom, #000 42%, transparent 96%);
+  }
+  .portrait-bleed__copy > * { max-width: 100%; }
 }
 
 .portrait-bleed__copy {
@@ -1477,8 +1456,8 @@ p strong { color: var(--ink); font-weight: 560; }
   aspect-ratio: 1.6;
   transform: translateX(-30%);
   background: radial-gradient(ellipse at center,
-    color-mix(in srgb, var(--purple) 52%, transparent) 0%,
-    color-mix(in srgb, var(--purple) 16%, transparent) 42%,
+    color-mix(in srgb, var(--accent) 52%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 16%, transparent) 42%,
     transparent 70%);
   opacity: 0.62;
   filter: blur(56px);
@@ -1505,7 +1484,7 @@ p strong { color: var(--ink); font-weight: 560; }
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--purple-soft);
+  background: var(--accent-soft);
   flex: none;
 }
 
@@ -1517,11 +1496,9 @@ p strong { color: var(--ink); font-weight: 560; }
 }
 
 /* Headline: the wash runs through the letterforms themselves. */
+/* Normal inline flow, so the media chip sits inside a line of the sentence
+   the way a word would rather than being pushed onto its own row. */
 .contact-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0 0.24em;
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(2.3rem, 9vw, 8.2rem);
@@ -1529,14 +1506,11 @@ p strong { color: var(--ink); font-weight: 560; }
   letter-spacing: -0.05em;
   line-height: 0.92;
   text-transform: uppercase;
-}
-
-.contact-head__wash {
-  background-image: linear-gradient(104deg,
+  background-image: linear-gradient(102deg,
     var(--white) 0%,
-    var(--purple-soft) 28%,
-    var(--purple) 52%,
-    var(--purple-soft) 72%,
+    var(--accent-soft) 26%,
+    var(--accent) 54%,
+    var(--accent-soft) 76%,
     var(--white) 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -1545,25 +1519,26 @@ p strong { color: var(--ink); font-weight: 560; }
 
 /* Any engine without background-clip: text still gets readable type. */
 @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
-  .contact-head__wash { color: var(--white); background-image: none; }
+  .contact-head { color: var(--white); background-image: none; }
 }
 
 /* Small inline media set into the sentence. */
 .contact-head__chip {
   display: inline-block;
-  width: clamp(76px, 9vw, 156px);
+  width: clamp(76px, 8.4vw, 148px);
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  flex: none;
-  align-self: center;
-  transform: translateY(-0.06em);
+  vertical-align: middle;
+  margin: 0 0.1em 0.12em;
 }
 
 .contact-head__chip img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 62% 22%;
+  /* Punch into the frame so the face reads at chip size. */
+  transform: scale(2.15);
+  transform-origin: 64% 44%;
 }
 
 /* Form — posts nothing; it composes a message in the reader's mail app. */
@@ -1601,7 +1576,7 @@ p strong { color: var(--ink); font-weight: 560; }
 }
 
 .contact-form input::placeholder { color: var(--ink-faint); }
-.contact-form input:focus { outline: 2px solid var(--purple); outline-offset: -2px; }
+.contact-form input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 .contact-form button {
   display: flex;
@@ -1616,7 +1591,7 @@ p strong { color: var(--ink); font-weight: 560; }
   transition: background var(--t-micro) linear;
 }
 
-.contact-form button:hover { background: var(--purple-soft); }
+.contact-form button:hover { background: var(--accent-soft); }
 
 .contact-form__note {
   margin-top: 12px;
@@ -1642,7 +1617,7 @@ p strong { color: var(--ink); font-weight: 560; }
   transition: color var(--t-mid) var(--ease-out);
 }
 
-.contact-mail:hover { color: var(--purple-soft); }
+.contact-mail:hover { color: var(--accent-soft); }
 
 .site-foot {
   border-top: 1px solid var(--hairline);
@@ -1787,7 +1762,7 @@ p strong { color: var(--ink); font-weight: 560; }
 
 .case-nav a:hover,
 .case-nav a.is-current { color: var(--ink); }
-.case-nav a.is-current::before { width: 10px; background: var(--purple); }
+.case-nav a.is-current::before { width: 10px; background: var(--accent); }
 
 .case-section {
   display: grid;

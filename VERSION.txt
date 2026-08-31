@@ -1,6 +1,6 @@
 EMMANUEL APPIADJEI PORTFOLIO
 Release: 3.1.0 — editorial revision (portrait-led hero, transparent adaptive header, surface system)
-Direction: near-black, graphite, soft white and muted purple-grey surfaces; restrained purple accent
+Direction: near-black, graphite, soft white and warm near-black surfaces; restrained orange accent
 
 Stack: static HTML + CSS + JS, no runtime dependencies.
 Build: node tools/build.mjs   (renders shared partials from assets/data/site.json)

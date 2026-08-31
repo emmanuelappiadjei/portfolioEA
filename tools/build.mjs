@@ -36,7 +36,7 @@ function header(active) {
 
   return `  <header class="site-header">
     <div class="site-header__bar">
-      <a class="brand" href="index.html" aria-label="${esc(meta.name)} — home">EA<sup>&reg;</sup></a>
+      <a class="brand" href="index.html">${esc(meta.name)}</a>
       <nav class="nav" aria-label="Primary">
 ${links}
       </nav>
@@ -77,11 +77,7 @@ function contact() {
       </div>
 
       <h2 class="contact-head" data-reveal>
-        <span class="contact-head__wash">Have a role,</span>
-        <span class="contact-head__chip" aria-hidden="true">
-          <img src="assets/images/portrait-hero.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
-        </span>
-        <span class="contact-head__wash">campaign or event in mind?</span>
+Have a role, campaign<span class="contact-head__chip" aria-hidden="true"><img src="assets/images/portrait-hero.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async"></span>or event in mind?
       </h2>
 
       <form class="contact-form" data-mailto="${meta.email}" data-reveal>
