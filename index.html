@@ -17,10 +17,31 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-latin.woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/site.css">
+  <script>
+    /* Decides whether the intro plays, before the first paint. It only ever
+       adds an attribute — the animation itself is CSS, so nothing here can
+       leave the page stuck. Plays once per browser session, and never when
+       reduced motion is requested. */
+    (function () {
+      try {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (sessionStorage.getItem('ea-intro-seen')) return;
+        sessionStorage.setItem('ea-intro-seen', '1');
+        document.documentElement.dataset.intro = 'play';
+      } catch (e) { /* private mode, blocked storage: just skip the intro */ }
+    })();
+  </script>
   <link rel="preload" as="image" href="assets/images/portrait-hero.webp" type="image/webp" fetchpriority="high">
   <script src="assets/js/site.js" defer></script>
 </head>
 <body data-page="home">
+  <div class="intro" aria-hidden="true">
+    <div class="intro__inner">
+      <p class="intro__name"><span><b>Emmanuel</b></span> <span><b>Appiadjei</b></span></p>
+      <span class="intro__rule"></span>
+    </div>
+  </div>
+
   <a class="skip-link" href="#main">Skip to content</a>
   <span class="progress" aria-hidden="true"></span>
 
