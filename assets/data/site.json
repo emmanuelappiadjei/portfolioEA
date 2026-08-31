@@ -7,16 +7,44 @@
     "location": "United States",
     "contactPrompt": "Have a role, campaign, or event in mind?"
   },
-
   "nav": [
-    { "id": "home", "label": "Home", "href": "index.html", "desktop": false },
-    { "id": "work", "label": "Work", "href": "work.html", "desktop": true },
-    { "id": "landing", "label": "Landing Pages", "href": "landing-pages.html", "desktop": true },
-    { "id": "emails", "label": "Emails", "href": "emails.html", "desktop": true },
-    { "id": "about", "label": "About", "href": "about.html", "desktop": true },
-    { "id": "contact", "label": "Contact", "href": "contact.html", "desktop": false }
+    {
+      "id": "home",
+      "label": "Home",
+      "href": "index.html",
+      "desktop": false
+    },
+    {
+      "id": "work",
+      "label": "Work",
+      "href": "work.html",
+      "desktop": true
+    },
+    {
+      "id": "landing",
+      "label": "Landing Pages",
+      "href": "landing-pages.html",
+      "desktop": true
+    },
+    {
+      "id": "emails",
+      "label": "Emails",
+      "href": "emails.html",
+      "desktop": true
+    },
+    {
+      "id": "about",
+      "label": "About",
+      "href": "about.html",
+      "desktop": true
+    },
+    {
+      "id": "contact",
+      "label": "Contact",
+      "href": "contact.html",
+      "desktop": false
+    }
   ],
-
   "projects": [
     {
       "id": "hfma",
@@ -83,7 +111,6 @@
       "height": 1012
     }
   ],
-
   "landing": [
     {
       "id": "mahjong",
@@ -98,7 +125,10 @@
       "shotAlt": "Full-page view of the Mahjong Social event landing page.",
       "width": 880,
       "height": 2103,
-      "extra": { "label": "RSVP email", "url": "mahjong-email-preview.html" }
+      "extra": {
+        "label": "RSVP email",
+        "url": "mahjong-email-preview.html"
+      }
     },
     {
       "id": "exec-dinner",
@@ -115,22 +145,8 @@
       "height": 3400
     },
     {
-      "id": "peacefest",
-      "no": "03",
-      "title": "Peacefest",
-      "client": "Nashville, TN",
-      "category": "Festival landing page",
-      "platform": "Concept",
-      "url": "landing-peacefest.html",
-      "note": "A festival page built on lineup momentum and a single ticket action — loud type, full-bleed motion, and a lineup index that keeps scanning easy.",
-      "shot": "assets/images/landing/peacefest.webp",
-      "shotAlt": "Full-page view of the Peacefest festival landing page.",
-      "width": 880,
-      "height": 3400
-    },
-    {
       "id": "peace-grounds",
-      "no": "04",
+      "no": "03",
       "title": "Peace Grounds",
       "client": "Specialty coffee · New York City",
       "category": "Brand site",
@@ -141,24 +157,8 @@
       "shotAlt": "Full-page view of the Peace Grounds coffee brand site.",
       "width": 880,
       "height": 3199
-    },
-    {
-      "id": "santo-sol-landing",
-      "no": "05",
-      "title": "Santo Sol",
-      "client": "Valentino × Bad Bunny",
-      "category": "Product landing page",
-      "platform": "Concept",
-      "url": "santo-sol-landing.html",
-      "note": "The product page for the Santo Sol fragrance concept — composition notes, parallax stacking, and a single conversion moment.",
-      "shot": "assets/images/landing/santo-sol.webp",
-      "shotAlt": "Full-page view of the Santo Sol fragrance landing page.",
-      "width": 880,
-      "height": 1798,
-      "extra": { "label": "Case study", "url": "valentino-bad-bunny-campaign.html" }
     }
   ],
-
   "emails": [
     {
       "id": "peacefest",
@@ -166,7 +166,11 @@
       "kind": "Promotional",
       "title": "Peacefest",
       "note": "A high-energy festival announcement built around artist discovery, lineup momentum, and a direct ticket call to action.",
-      "tags": ["Visual design", "Event promotion", "CTA strategy"],
+      "tags": [
+        "Visual design",
+        "Event promotion",
+        "CTA strategy"
+      ],
       "url": "email-peacefest.html",
       "mode": "image",
       "image": "assets/images/work/email-peacefest.webp",
@@ -180,7 +184,11 @@
       "kind": "Lifecycle",
       "title": "Peace Grounds",
       "note": "A warm, modular pickup email that pairs brand storytelling with product highlights and a clear return-order path.",
-      "tags": ["Email design", "Product modules", "Lifecycle CTA"],
+      "tags": [
+        "Email design",
+        "Product modules",
+        "Lifecycle CTA"
+      ],
       "url": "email-peacegrounds.html",
       "mode": "frame",
       "frameHeight": 2400
@@ -191,7 +199,11 @@
       "kind": "B2B event",
       "title": "HFMA Day at the Track",
       "note": "A HubSpot event-outreach email organising venue details, attending-team information, brand context, and a direct connection CTA.",
-      "tags": ["HubSpot", "Event outreach", "Responsive HTML"],
+      "tags": [
+        "HubSpot",
+        "Event outreach",
+        "Responsive HTML"
+      ],
       "url": "email-hfma-track.html",
       "mode": "frame",
       "frameHeight": 1900
@@ -202,13 +214,16 @@
       "kind": "Confirmation",
       "title": "Mahjong Social RSVP",
       "note": "The confirmation email that closes the Mahjong Social registration loop — venue, timing, and what to expect on arrival.",
-      "tags": ["Transactional", "Event details", "HubSpot"],
+      "tags": [
+        "Transactional",
+        "Event details",
+        "HubSpot"
+      ],
       "url": "mahjong-email-preview.html",
       "mode": "frame",
       "frameHeight": 1500
     }
   ],
-
   "disciplines": [
     {
       "no": "01",
@@ -231,9 +246,14 @@
       "note": "Contact organisation, outreach workflows, research, reporting, and follow-up support."
     }
   ],
-
   "marquee": [
-    "Campaigns", "Content", "Email", "Events", "Landing pages",
-    "Brand experiences", "Audience strategy", "Marketing operations"
+    "Campaigns",
+    "Content",
+    "Email",
+    "Events",
+    "Landing pages",
+    "Brand experiences",
+    "Audience strategy",
+    "Marketing operations"
   ]
 }
