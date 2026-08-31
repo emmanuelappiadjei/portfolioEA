@@ -1888,102 +1888,34 @@ p strong { color: var(--ink); font-weight: 560; }
 
 .next-project:hover .next-project__title { transform: translateX(clamp(6px, 1vw, 18px)); }
 
-/* 14 — Intro ------------------------------------------------------------
-   The name arrives first, then the black lifts to leave it living in the
-   header. Driven entirely by CSS with animation-fill-mode: forwards, so it
-   always finishes even if scripting stops after the first frame; the only
-   job JS has is deciding whether to play it at all. The panel is hidden
-   unless <html data-intro="play"> is set, so a no-JS visitor never sees it.
+/* 14 — Page arrival ------------------------------------------------------
+   A short fade as the page comes in. Deliberately not applied to <body> or
+   to .site-header: animating opacity creates a stacking context, and on the
+   header that would break the mix-blend-mode the adaptive contrast relies
+   on. The header's inner bar is faded instead, which leaves the blending on
+   the header itself untouched. The end state is the natural one, so if the
+   animation never runs the page is simply visible.
    ---------------------------------------------------------------------- */
-.intro { display: none; }
-
-[data-intro="play"] .intro {
-  display: grid;
-  place-items: center;
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  background: var(--black);
-  /* Never intercepts a click, even mid-animation. */
-  pointer-events: none;
-  animation: intro-curtain 1750ms var(--ease-out) forwards;
+@keyframes page-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-@keyframes intro-curtain {
-  0%, 52%  { opacity: 1; visibility: visible; }
-  100%     { opacity: 0; visibility: hidden; }
+main,
+.site-header__bar,
+.contact-block,
+.site-foot {
+  animation: page-in 520ms var(--ease-out) both;
 }
 
-.intro__inner {
-  display: grid;
-  justify-items: center;
-  gap: clamp(14px, 1.8vw, 22px);
-  padding-inline: var(--gutter);
-  animation: intro-lift 1750ms var(--ease-out) forwards;
-}
-
-@keyframes intro-lift {
-  0%, 52%  { transform: translateY(0); }
-  100%     { transform: translateY(-18px); }
-}
-
-.intro__name {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0 0.24em;
-  font-family: var(--font-display);
-  font-size: clamp(1.9rem, 6.4vw, 5.4rem);
-  font-weight: 700;
-  letter-spacing: -0.055em;
-  line-height: 0.92;
-  text-transform: uppercase;
-  color: var(--white);
-}
-
-/* Each word is clipped and rises into its own box. */
-.intro__name span {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.08em;
-}
-
-.intro__name b {
-  display: block;
-  font-weight: inherit;
-  transform: translateY(110%);
-  animation: intro-word 820ms var(--ease-out) forwards;
-}
-
-.intro__name span:nth-child(1) b { animation-delay: 120ms; }
-.intro__name span:nth-child(2) b { animation-delay: 235ms; }
-
-@keyframes intro-word {
-  to { transform: translateY(0); }
-}
-
-/* One hairline in the accent, drawn under the name. */
-.intro__rule {
-  width: min(240px, 42vw);
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: 50% 50%;
-  animation: intro-rule 700ms var(--ease-out) 480ms forwards;
-}
-
-@keyframes intro-rule {
-  to { transform: scaleX(1); }
-}
-
-/* The portrait settles as the black lifts, so the reveal has some depth. */
-[data-intro="play"] .hero__media img {
-  animation: intro-media 2400ms var(--ease-out) forwards;
-}
-
-@keyframes intro-media {
-  from { transform: scale(1.085); }
+/* A touch of settle on the hero image so the arrival has some depth. */
+@keyframes hero-settle {
+  from { transform: scale(1.035); }
   to   { transform: scale(1); }
+}
+
+.hero__media img {
+  animation: hero-settle 1400ms var(--ease-out) both;
 }
 
 /* 15 — Motion primitives ------------------------------------------------- */
@@ -2059,9 +1991,11 @@ p strong { color: var(--ink); font-weight: 560; }
 
   [data-reveal],
   [data-reveal-mask] > * { opacity: 1; transform: none; }
-  .intro,
-  [data-intro="play"] .intro { display: none !important; }
-  [data-intro="play"] .hero__media img { animation: none; }
+  main,
+  .site-header__bar,
+  .contact-block,
+  .site-foot,
+  .hero__media img { animation: none; }
   [data-mask-media]::after { display: none; }
   .marquee__track { animation: none; transform: none; }
   .hero__media img { transform: none; }
