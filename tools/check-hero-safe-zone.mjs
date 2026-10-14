@@ -1,9 +1,10 @@
 /**
  * Hero safe-zone check.
  *
- * Maps the portrait's measured face box through the rendered `object-fit:
- * cover` geometry at nine viewport sizes and asserts that no text element in
- * the hero or the fixed header overlaps it.
+ * Maps the hero cut-out's measured head box through the rendered
+ * `object-fit: contain` geometry at nine viewport sizes and asserts that no
+ * text element in the hero or the fixed header overlaps it. The giant word
+ * behind the figure is excluded: it sits behind him by design.
  *
  * Serve the site first (`npm start`), then:
  *   node tools/check-hero-safe-zone.mjs [http://localhost:8080]
@@ -14,26 +15,30 @@ const BASE = process.argv[2] || 'http://localhost:8080';
 const OUT = process.env.HERO_CHECK_OUT || '';
 if (OUT) fs.mkdirSync(OUT, { recursive: true });
 
-// Measured from assets/images/portrait-hero.png: the lit facial features.
-const FACE = { x0: 0.53, x1: 0.745, y0: 0.22, y1: 0.70 };  // strict: whole head, hairline down
+// Measured from the alpha of assets/images/home/hero-reach.webp (754 × 1222):
+// the head, hair included, spans x 31.4–69.8% and y 0.5–30% (chin and neck).
+// Padded a little on every side.
+const FACE = { x0: 0.30, x1: 0.71, y0: 0.0, y1: 0.31 };
 
 const b = await chromium.launch();
 let bad = 0;
 for (const [w, h] of [[1600,1000],[1440,900],[1280,800],[1024,768],[834,1112],[768,1024],[430,932],[390,844],[360,740]]) {
   const p = await (await b.newContext({ viewport: { width: w, height: h } })).newPage();
   await p.goto(BASE + '/index.html', { waitUntil: 'networkidle' });
-  await p.waitForTimeout(700);
+  await p.waitForTimeout(1800);  // let the arrival animation settle
 
   const r = await p.evaluate((FACE) => {
-    const img = document.querySelector('.hero__media img');
+    const img = document.querySelector('.home-hero__figure img');
     const box = img.getBoundingClientRect();
     const nw = img.naturalWidth, nh = img.naturalHeight;
 
-    // object-fit: cover geometry
-    const scale = Math.max(box.width / nw, box.height / nh);
+    // object-fit: contain geometry
+    const scale = Math.min(box.width / nw, box.height / nh);
     const dw = nw * scale, dh = nh * scale;
     const cs = getComputedStyle(img);
-    const [px, py] = cs.objectPosition.split(' ');
+    const pos = cs.objectPosition.split(' ');
+    const px = pos[0] === 'left' ? '0%' : pos[0] === 'right' ? '100%' : pos[0];
+    const py = (pos[1] || pos[0]) === 'bottom' ? '100%' : (pos[1] || pos[0]) === 'top' ? '0%' : (pos[1] || '50%');
     const fx = parseFloat(px) / 100, fy = parseFloat(py) / 100;
     const offX = (box.width - dw) * fx;
     const offY = (box.height - dh) * fy;
@@ -46,7 +51,8 @@ for (const [w, h] of [[1600,1000],[1440,900],[1280,800],[1024,768],[834,1112],[7
     };
 
     // every element in the hero (and the fixed header) that paints text
-    const nodes = [...document.querySelectorAll('.hero *, .site-header *')].filter(el => {
+    const nodes = [...document.querySelectorAll('.home-hero *, .site-header *')].filter(el => {
+      if (el.closest('.home-hero__word')) return false;
       if (!el.textContent.trim()) return false;
       if (el.children.length && ![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return false;
       const s = getComputedStyle(el);

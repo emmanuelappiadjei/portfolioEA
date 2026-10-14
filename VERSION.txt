@@ -1,6 +1,8 @@
 EMMANUEL APPIADJEI PORTFOLIO
-Release: 3.1.0 — editorial revision (portrait-led hero, transparent adaptive header, surface system)
-Direction: near-black, graphite, soft white and warm near-black surfaces; restrained orange accent
+Release: 4.0.0 — heat (poster hero with the REACH word and Nashville skyline, stacked work cards,
+         full-length page and email wall, photo pile about, Archivo throughout)
+Direction: flame-to-ember gradient sheets for the hero and close, near-black page between;
+           one family (Archivo) across its width axis; plain text links, no pills
 
 Stack: static HTML + CSS + JS, no runtime dependencies.
 Build: node tools/build.mjs   (renders shared partials from assets/data/site.json)

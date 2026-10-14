@@ -45,9 +45,10 @@
   })();
 
   /* --- Header -----------------------------------------------------------
-     Hides on the way down, returns on the way up, and retires entirely once
-     the closing contact block reaches the top of the viewport, so it never
-     sits on top of the footer. */
+     Gains its backing bar once the page scrolls, hides on the way down,
+     returns on the way up, and retires entirely once the closing contact
+     block reaches the top of the viewport, so it never sits on top of the
+     footer. */
   (function header() {
     var el = document.querySelector('.site-header');
     if (!el) return;
@@ -75,6 +76,9 @@
         retired = wantRetired;
         el.classList.toggle('is-retired', retired);
       }
+
+      // The smoked backing bar only once the page has moved off the hero.
+      el.classList.toggle('is-scrolled', y > 40);
 
       var wantTucked = tucked;
       if (y < 90) wantTucked = false;
@@ -304,25 +308,147 @@
     update();
   })();
 
-  /* --- Contact form -------------------------------------------------------
-     Static hosting has no backend, so the form composes a message in the
-     reader's own mail app. The address is also printed below it, so the
-     section still works if no mail client is configured. */
-  (function contactForm() {
-    var form = document.querySelector('.contact-form');
-    if (!form) return;
+  /* --- Copy the email address ------------------------------------------
+     The address itself is a mailto link; this is the fallback for anyone
+     without a mail app. Falls back again to selecting the text. */
+  all('[data-copy]').forEach(function (btn) {
+    var status = btn.parentNode.querySelector('.contact-copy__status');
+    function say(msg) {
+      if (!status) return;
+      status.textContent = msg;
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function () { status.textContent = ''; }, 2400);
+    }
+    function selectIt() {
+      var mail = btn.closest('.contact-block') && btn.closest('.contact-block').querySelector('.contact-mail');
+      if (!mail) return;
+      var r = document.createRange(); r.selectNodeContents(mail);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    }
+    on(btn, 'click', function () {
+      var text = btn.getAttribute('data-copy');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { say('Copied'); }, function () { selectIt(); say('Address selected'); });
+      } else { selectIt(); say('Address selected'); }
+    });
+  });
 
-    on(form, 'submit', function (e) {
-      e.preventDefault();
-      var to = form.dataset.mailto;
-      if (!to) return;
-      var name = (form.querySelector('#cf-name') || {}).value || '';
-      var note = (form.querySelector('#cf-note') || {}).value || '';
-      var subject = name ? name + ' — portfolio enquiry' : 'Portfolio enquiry';
-      var body = note + (name ? '\n\n— ' + name : '');
-      window.location.href = 'mailto:' + to +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(body);
+  /* --- Homepage: the big word -------------------------------------------
+     Sized so the word spans the stage whatever its length, and never taller
+     than the stage can carry. CSS holds a clamp() fallback. */
+  (function heroWord() {
+    var word = document.querySelector('.home-hero__word');
+    if (!word) return;
+    var stage = word.parentNode;
+    function fit() {
+      word.style.fontSize = '100px';
+      var w = word.getBoundingClientRect().width;
+      word.style.fontSize = '';
+      if (!w) return;
+      var size = Math.min(100 * stage.clientWidth * 0.97 / w, stage.clientHeight * 0.62);
+      stage.style.setProperty('--word-size', size.toFixed(1) + 'px');
+    }
+    fit();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    on(window, 'resize', fit);
+  })();
+
+  /* --- Homepage: pages and emails ----------------------------------------
+     Each screen knows how far its long page has to travel inside the frame.
+     Mouse: hover plays it, click opens the full view. Touch: the first tap
+     plays it, the second opens it. */
+  (function screenWall() {
+    var shots = all('.home-shot');
+    var dialog = document.querySelector('.home-viewer');
+    if (!shots.length || !dialog) return;
+
+    function measure(btn) {
+      var img = btn.querySelector('img');
+      if (!img.naturalWidth) return;
+      var shown = btn.clientWidth * img.naturalHeight / img.naturalWidth;
+      var travel = Math.max(0, shown - (btn.clientHeight - 20));
+      btn.style.setProperty('--travel', travel.toFixed(0) + 'px');
+      btn.style.setProperty('--dur', Math.min(14, Math.max(3, travel / 160)).toFixed(1) + 's');
+    }
+
+    shots.forEach(function (btn) {
+      var img = btn.querySelector('img');
+      if (img.complete) measure(btn); else on(img, 'load', function () { measure(btn); });
+    });
+    on(window, 'resize', function () { shots.forEach(measure); });
+
+    var image = dialog.querySelector('[data-viewer-img]');
+    var live = dialog.querySelector('[data-viewer-open]');
+    var canHover = window.matchMedia('(hover: hover)');
+
+    function openFull(btn) {
+      image.src = btn.getAttribute('data-full');
+      image.alt = btn.querySelector('img').alt || btn.getAttribute('data-title');
+      live.href = btn.getAttribute('data-href');
+      if (dialog.showModal) dialog.showModal(); else dialog.setAttribute('open', '');
+      dialog.querySelector('.home-viewer__scroll').scrollTop = 0;
+    }
+
+    function close() { if (dialog.close) dialog.close(); else dialog.removeAttribute('open'); }
+
+    shots.forEach(function (btn) {
+      on(btn, 'click', function () {
+        if (!canHover.matches && !btn.classList.contains('is-playing')) {
+          shots.forEach(function (b) { b.classList.remove('is-playing'); });
+          btn.classList.add('is-playing');
+          return;
+        }
+        openFull(btn);
+      });
+    });
+
+    on(dialog.querySelector('[data-viewer-close]'), 'click', close);
+    on(dialog, 'click', function (e) { if (e.target === dialog) close(); });
+  })();
+
+  /* --- Homepage: the pile of photos --------------------------------------
+     Tapping the pile sends the top print to the back and steps the story on.
+     The first page of the story is real markup; the other two live in
+     <template>s, so without script the section still reads. */
+  (function photoPile() {
+    var pile = document.querySelector('.home-pile');
+    if (!pile) return;
+    var prints = all('.home-print', pile);
+    var title = document.querySelector('[data-story-title]');
+    var text = document.querySelector('[data-story-text]');
+    var swap = document.querySelector('.home-story__swap');
+    var count = document.querySelector('[data-story-count]');
+    var bars = all('.home-story__bars span');
+
+    var pages = [{ title: title.innerHTML, text: text.textContent }];
+    all('template[data-story]').forEach(function (t) {
+      pages.push({ title: t.content.querySelector('h2').innerHTML, text: t.content.querySelector('p').textContent });
+    });
+
+    var index = 0;
+    var busy = false;
+
+    on(pile, 'click', function () {
+      if (busy) return;
+      busy = true;
+      var top = prints.filter(function (p) { return p.getAttribute('data-pos') === '0'; })[0];
+      top.classList.add('is-leaving');
+      swap.classList.add('is-fading');
+      index = (index + 1) % pages.length;
+
+      setTimeout(function () {
+        prints.forEach(function (p) {
+          var pos = +p.getAttribute('data-pos');
+          p.setAttribute('data-pos', String((pos + prints.length - 1) % prints.length));
+        });
+        top.classList.remove('is-leaving');
+        title.innerHTML = pages[index].title;
+        text.textContent = pages[index].text;
+        count.textContent = '0' + (index + 1) + ' / 0' + pages.length;
+        bars.forEach(function (b, i) { b.classList.toggle('is-on', i === index); });
+        swap.classList.remove('is-fading');
+        busy = false;
+      }, reduceMotion.matches ? 0 : 380);
     });
   })();
 

@@ -11,8 +11,7 @@
   <meta property="og:title" content="Clarksville Family Carnival — Emmanuel Appiadjei">
   <meta property="og:description" content="Community marketing for a military family nonprofit's flagship annual event.">
   <meta property="og:image" content="assets/images/work/carnival.webp">
-  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-tight-latin.woff2" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-latin.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/archivo-latin.woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/site.css">
   <script src="assets/js/site.js" defer></script>
@@ -24,16 +23,16 @@
   <!-- build:header -->
   <header class="site-header">
     <div class="site-header__bar">
-      <a class="brand" href="index.html">Emmanuel Appiadjei</a>
+      <a class="brand" href="index.html">emmanuel appiadjei</a>
       <nav class="nav" aria-label="Primary">
-        <a class="nav__link" href="work.html" aria-current="page"><span data-label="Work">Work</span></a>
-        <a class="nav__link" href="landing-pages.html"><span data-label="Landing Pages">Landing Pages</span></a>
-        <a class="nav__link" href="emails.html"><span data-label="Emails">Emails</span></a>
-        <a class="nav__link" href="about.html"><span data-label="About">About</span></a>
+        <a class="nav__link" href="work.html" aria-current="page">Work</a>
+        <a class="nav__link" href="landing-pages.html">Landing pages</a>
+        <a class="nav__link" href="emails.html">Emails</a>
+        <a class="nav__link" href="about.html">About</a>
+        <a class="nav__link" href="contact.html">Contact</a>
       </nav>
-      <a class="header__cta" href="contact.html">Let&rsquo;s connect <span class="arrow" aria-hidden="true">&#8599;</span></a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
-        <span class="menu-toggle__lines" aria-hidden="true"></span>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="menu-toggle__open">Menu</span><span class="menu-toggle__close">Close</span>
       </button>
     </div>
   </header>
@@ -41,12 +40,12 @@
 
   <!-- build:mobile-menu -->
   <div class="mobile-menu" id="mobile-menu">
-    <a class="mobile-menu__link" href="index.html">Home <span class="label">01</span></a>
-    <a class="mobile-menu__link" href="work.html" aria-current="page">Work <span class="label">02</span></a>
-    <a class="mobile-menu__link" href="landing-pages.html">Landing Pages <span class="label">03</span></a>
-    <a class="mobile-menu__link" href="emails.html">Emails <span class="label">04</span></a>
-    <a class="mobile-menu__link" href="about.html">About <span class="label">05</span></a>
-    <a class="mobile-menu__link" href="contact.html">Contact <span class="label">06</span></a>
+    <a class="mobile-menu__link" href="index.html">Home</a>
+    <a class="mobile-menu__link" href="work.html" aria-current="page">Work</a>
+    <a class="mobile-menu__link" href="landing-pages.html">Landing pages</a>
+    <a class="mobile-menu__link" href="emails.html">Emails</a>
+    <a class="mobile-menu__link" href="about.html">About</a>
+    <a class="mobile-menu__link" href="contact.html">Contact</a>
     <div class="mobile-menu__foot">
       <a class="label" href="mailto:eappiadjei11@gmail.com">eappiadjei11@gmail.com</a>
       <span class="label">United States</span>
@@ -202,58 +201,32 @@
   <!-- /build:next-project -->
 
   <!-- build:contact -->
-  <section class="contact-block section" id="contact">
-    <span class="contact-block__glow" aria-hidden="true"></span>
-    <div class="shell contact-block__inner">
-
-      <div class="contact-rule">
-        <span aria-hidden="true">&#123;</span>
-        <span class="label">Let&rsquo;s connect</span>
-        <span class="contact-rule__mark" aria-hidden="true"></span>
-        <span class="label contact-rule__echo" aria-hidden="true">Let&rsquo;s connect</span>
-        <span aria-hidden="true">&#125;</span>
-      </div>
-
-      <h2 class="contact-head" data-reveal>
-Have a role, campaign<span class="contact-head__chip" aria-hidden="true"><img src="assets/images/portrait-hero.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async"></span>or event in mind?
-      </h2>
-
-      <form class="contact-form" data-mailto="eappiadjei11@gmail.com" data-reveal>
-        <p class="contact-form__field">
-          <label for="cf-name">Name</label>
-          <input id="cf-name" name="name" type="text" autocomplete="name" placeholder="Name">
-        </p>
-        <p class="contact-form__field">
-          <label for="cf-note">What you&rsquo;re working on</label>
-          <input id="cf-note" name="note" type="text" placeholder="What you&rsquo;re working on">
-        </p>
-        <button type="submit">Send <span class="arrow" aria-hidden="true">&#8629;</span></button>
-      </form>
-      <p class="contact-form__note">Opens a draft in your mail app &mdash; or write to me directly below.</p>
-
-      <div class="contact-write" data-reveal>
-        <span class="label">Write</span>
-        <a class="contact-mail" href="mailto:eappiadjei11@gmail.com">eappiadjei11@gmail.com</a>
-      </div>
-    </div>
-  </section>
-
-  <footer class="site-foot">
+  <section class="contact-block" id="contact">
+    <img class="contact-block__sky" src="assets/images/home/nashville.svg" alt="" width="1600" height="324" loading="lazy" decoding="async">
     <div class="shell">
-      <div class="site-foot__row">
+      <p class="contact-block__ask">Have a role, campaign, or event in mind?</p>
+      <a class="contact-mail" href="mailto:eappiadjei11@gmail.com">eappiadjei11@gmail.com</a>
+      <p class="contact-block__actions">
+        <button class="contact-copy" type="button" data-copy="eappiadjei11@gmail.com">Copy address</button>
+        <span class="contact-copy__status" aria-live="polite"></span>
+      </p>
+    </div>
+
+    <footer class="site-foot">
+      <div class="shell site-foot__row">
         <span class="label">&copy; <span data-year>2026</span> Emmanuel Appiadjei</span>
         <div class="site-foot__links">
           <a class="label" href="index.html">Home</a>
           <a class="label" href="work.html">Work</a>
-          <a class="label" href="landing-pages.html">Landing Pages</a>
+          <a class="label" href="landing-pages.html">Landing pages</a>
           <a class="label" href="emails.html">Emails</a>
           <a class="label" href="about.html">About</a>
           <a class="label" href="contact.html">Contact</a>
         </div>
         <span class="label">Creative + Brand Marketing</span>
       </div>
-    </div>
-  </footer>
+    </footer>
+  </section>
   <!-- /build:contact -->
 </body>
 </html>

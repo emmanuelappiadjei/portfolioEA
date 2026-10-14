@@ -22,7 +22,7 @@
     },
     {
       "id": "landing",
-      "label": "Landing Pages",
+      "label": "Landing pages",
       "href": "landing-pages.html",
       "desktop": true
     },
@@ -42,7 +42,7 @@
       "id": "contact",
       "label": "Contact",
       "href": "contact.html",
-      "desktop": false
+      "desktop": true
     }
   ],
   "projects": [
@@ -191,7 +191,10 @@
       ],
       "url": "email-peacegrounds.html",
       "mode": "frame",
-      "frameHeight": 2400
+      "frameHeight": 2400,
+      "poster": "assets/images/emails/peace-grounds-full.webp",
+      "posterWidth": 800,
+      "posterHeight": 3292
     },
     {
       "id": "hfma-track",
@@ -206,7 +209,10 @@
       ],
       "url": "email-hfma-track.html",
       "mode": "frame",
-      "frameHeight": 1900
+      "frameHeight": 1900,
+      "poster": "assets/images/emails/hfma-track-full.webp",
+      "posterWidth": 800,
+      "posterHeight": 2644
     },
     {
       "id": "mahjong-rsvp",
@@ -221,7 +227,10 @@
       ],
       "url": "mahjong-email-preview.html",
       "mode": "frame",
-      "frameHeight": 1500
+      "frameHeight": 1500,
+      "poster": "assets/images/emails/mahjong-rsvp-full.webp",
+      "posterWidth": 800,
+      "posterHeight": 1125
     }
   ],
   "disciplines": [
@@ -245,15 +254,5 @@
       "title": "Marketing Operations",
       "note": "Contact organisation, outreach workflows, research, reporting, and follow-up support."
     }
-  ],
-  "marquee": [
-    "Campaigns",
-    "Content",
-    "Email",
-    "Events",
-    "Landing pages",
-    "Brand experiences",
-    "Audience strategy",
-    "Marketing operations"
   ]
 }

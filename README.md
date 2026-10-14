@@ -93,7 +93,7 @@ npm start          # in one terminal
 npm run check:hero # in another
 ```
 
-Loads the homepage at nine viewport sizes, maps the portrait's measured face
+Loads the homepage at nine viewport sizes, maps the portrait's measured head
 box through the rendered image geometry, and fails if any text in the hero or
 the header overlaps it. Run this after touching the hero, the portrait, or the
 type scale.
@@ -128,9 +128,12 @@ mahjong-email-preview.html  ┘
 
 assets/
   css/site.css       The whole design system
-  css/fonts.css      Self-hosted Inter + Inter Tight @font-face rules
+  css/fonts.css      Self-hosted Archivo @font-face rules (variable weight + width)
   data/site.json     Projects, landing pages, emails, navigation, disciplines
   fonts/             woff2 files
+  images/home/       Homepage hero cut-out and the skyline drawing
+  images/about/      The three photos in the homepage photo pile
+  images/emails/     Full-length screenshots of the HTML emails
   images/            Portraits and web-optimised derivatives
   js/site.js         All site behaviour
 images/              Original source photography and email artwork
@@ -152,8 +155,9 @@ Defined once as custom properties at the top of `assets/css/site.css`:
 | `--gray-light` | `#d2cfd5` | Light-surface media ground |
 | `--body-dark` | `#b6b2af` | Body copy on dark surfaces |
 | `--body-light` | `#454341` | Body copy on light surfaces |
-| `--accent` | `#e2542b` | Focus rings, one accent per section |
-| `--accent-soft` | `#f2a184` | Accent word, the closing headline wash |
+| `--accent` | `#ff5a1e` | Flame: the hero and closing sheets, focus rings, one accent per section |
+| `--accent-soft` | `#ff8a3a` | Amber: the glow in the hero and closing gradients |
+| `--ember` | `#c4162c` | The deep red the gradients fall into |
 
 ### Surfaces
 
@@ -170,7 +174,11 @@ alternates between them rather than running as one uninterrupted dark field.
 
 ### Type
 
-Inter Tight for display, Inter for body, both self-hosted. Body size, leading,
+One family, Archivo, self-hosted as variable fonts that carry both a weight
+axis (100–900) and a width axis (62–125%). The site leans on the width axis
+instead of a second typeface: wide and heavy for the big words on the homepage,
+condensed (`--stretch-display`) for headings, slightly wide
+(`--stretch-label`) for the small uppercase labels. Body size, leading,
 tracking, and weight come from `--body-size` / `--body-leading` /
 `--body-tracking` / `--weight-body` and are applied at the `body` and `p`
 level, so every page and case study shares one paragraph style. Display sizes
@@ -178,23 +186,55 @@ are `clamp()`, so there are no font-size breakpoints to keep in sync.
 
 ### Header
 
-Fixed, fully transparent, no container, no border, no blur. Contrast is
-adaptive: `mix-blend-mode: difference` inverts it against whatever is beneath,
-so the same markup reads on black, on soft white, over photography, and over
-the tinted sections. It tucks away on downward scroll, returns on upward
-scroll, and retires entirely once the closing contact block reaches the top of
-the viewport. Nothing between it and the page may set `isolation` or paint an
-opaque background, or the blend stops working.
+Fixed, off-white type with no container: the full name in lowercase on the
+left and plain text links on the right (a hairline sits under the current
+page and wipes in on hover). On small screens the links fold into a drawer
+opened by the word "Menu". At the top of a page the header sits straight on
+the hero; once the page scrolls, a dark smoked bar fades in behind it so it
+reads over light sections and photography. It tucks away on downward scroll,
+returns on upward scroll, and retires entirely once the closing contact block
+reaches the top of the viewport.
+
+### Homepage
+
+`index.html` is a poster first, then a campaign deck:
+
+- **Hero** — a flame gradient with print grain. The Nashville skyline
+  (`assets/images/home/nashville.svg`, a placeholder line drawing, swap in the
+  final outline at the same path) rises from behind one giant word, and the
+  cut-out portrait stands in front of both. The word is sized by script to
+  span the screen whatever its length; change it in `index.html`
+  (`.home-hero__word`). A small fanned deck of the four project images leads
+  down to the work.
+- **Selected work** — every project as a big card; the cards are sticky at
+  slightly different offsets, so they stack up as the page scrolls.
+  Generated from `site.json` (`<!-- build:home-work -->`).
+- **Pages and emails** — every landing page and email at full width, drifting
+  past. Hovering a screen (or the first tap on touch) scrolls the long page
+  through its frame; clicking (or the second tap) opens it full size with a
+  link to the live page. Landing pages use their full-length `shot`; HTML
+  emails use a full-length `poster` screenshot. Generated from `site.json`
+  (`<!-- build:home-screens -->`).
+- **About** — three photos in a pile. Tapping the pile sends the top print to
+  the back and steps the story beside it on. The first page of the story is
+  real markup; the other two are `<template>`s, so the section reads without
+  script.
+- **How I work** — the four disciplines as a list (`<!-- build:home-caps -->`).
+
+The hero portrait (`assets/images/home/hero-reach.webp`) is the studio photo
+`images/portrait-studio-arms.jpg` with the background removed and a light and
+colour grade to match the orange reference: darker overall, light from one
+side, a warm glow along the edges. Nothing in the photo is generated or
+reshaped; the grade only changes light and colour.
 
 ### Hero safe zone
 
-Nothing in the hero is allowed to touch the portrait's face. The face position
-is measured from the source file rather than estimated — the lit features
-occupy x 58.9–70.8% and y 36.3–65.6%; everything left of 52% and above 34% is
-studio black. `--hero-focus-x`, `--hero-media-top`, and `--hero-safe-width` are
-set per breakpoint from those numbers, and a Playwright check maps the face box
-through the `object-fit: cover` geometry at nine viewport sizes and asserts no
-text element — including the header and the EA monogram — intersects it.
+Nothing in the hero is allowed to touch his face. The head box is measured
+from the cut-out's alpha rather than estimated — hair included, the head
+spans x 31.4–69.8% and y 0.5–30% of the image — and a Playwright check maps
+that box through the `object-fit: contain` geometry at nine viewport sizes and
+asserts no text element in the hero or the header intersects it. The giant
+word is excluded on purpose: it sits behind him.
 
 ### Motion
 
@@ -209,6 +249,10 @@ which leaves a fully readable static page.
 - The two HubSpot emails (`email-hfma-track.html`, `mahjong-email-preview.html`)
   load their Revecore and SmarterDX logos from HubSpot's CDN, exactly as the
   delivered emails did. Those are the only external image requests on the site.
+- The full-length email screenshots in `assets/images/emails/` were captured
+  where HubSpot's CDN was unreachable, so the Revecore and SmarterDX logos are
+  left out of them (the header simply has no logo, not a broken image).
+  Re-capture them at 800px wide from a machine that can load the logos.
 - The Canva deck embeds on the two speculative case studies are external
   iframes; both pages note that and stay readable if the embed is blocked.
 - Speculative work is labelled as such everywhere it appears, and its numbers

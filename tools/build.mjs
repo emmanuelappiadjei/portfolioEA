@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const data = JSON.parse(readFileSync(join(ROOT, 'assets/data/site.json'), 'utf8'));
-const { meta, nav, projects, landing, emails, disciplines, marquee } = data;
+const { meta, nav, projects, landing, emails, disciplines } = data;
 
 const esc = (s) => String(s)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -27,31 +27,29 @@ const esc = (s) => String(s)
 /* ---------------------------------------------------------------- partials */
 
 function header(active) {
-  // The label is duplicated into data-label so the link can roll vertically
-  // on hover without a second element in the markup.
   const links = nav.filter((n) => n.desktop).map((n) => {
     const current = n.id === active ? ' aria-current="page"' : '';
-    return `        <a class="nav__link" href="${n.href}"${current}><span data-label="${esc(n.label)}">${esc(n.label)}</span></a>`;
+    return `        <a class="nav__link" href="${n.href}"${current}>${esc(n.label)}</a>`;
   }).join('\n');
 
+  // The name is set in lowercase on purpose; it is the whole wordmark.
   return `  <header class="site-header">
     <div class="site-header__bar">
-      <a class="brand" href="index.html">${esc(meta.name)}</a>
+      <a class="brand" href="index.html">${esc(meta.name.toLowerCase())}</a>
       <nav class="nav" aria-label="Primary">
 ${links}
       </nav>
-      <a class="header__cta" href="contact.html">Let&rsquo;s connect <span class="arrow" aria-hidden="true">&#8599;</span></a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
-        <span class="menu-toggle__lines" aria-hidden="true"></span>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="menu-toggle__open">Menu</span><span class="menu-toggle__close">Close</span>
       </button>
     </div>
   </header>`;
 }
 
 function mobileMenu(active) {
-  const links = nav.map((n, i) => {
+  const links = nav.map((n) => {
     const current = n.id === active ? ' aria-current="page"' : '';
-    return `    <a class="mobile-menu__link" href="${n.href}"${current}>${esc(n.label)} <span class="label">${String(i + 1).padStart(2, '0')}</span></a>`;
+    return `    <a class="mobile-menu__link" href="${n.href}"${current}>${esc(n.label)}</a>`;
   }).join('\n');
 
   return `  <div class="mobile-menu" id="mobile-menu">
@@ -64,53 +62,27 @@ ${links}
 }
 
 function contact() {
-  return `  <section class="contact-block section" id="contact">
-    <span class="contact-block__glow" aria-hidden="true"></span>
-    <div class="shell contact-block__inner">
-
-      <div class="contact-rule">
-        <span aria-hidden="true">&#123;</span>
-        <span class="label">Let&rsquo;s connect</span>
-        <span class="contact-rule__mark" aria-hidden="true"></span>
-        <span class="label contact-rule__echo" aria-hidden="true">Let&rsquo;s connect</span>
-        <span aria-hidden="true">&#125;</span>
-      </div>
-
-      <h2 class="contact-head" data-reveal>
-Have a role, campaign<span class="contact-head__chip" aria-hidden="true"><img src="assets/images/portrait-hero.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async"></span>or event in mind?
-      </h2>
-
-      <form class="contact-form" data-mailto="${meta.email}" data-reveal>
-        <p class="contact-form__field">
-          <label for="cf-name">Name</label>
-          <input id="cf-name" name="name" type="text" autocomplete="name" placeholder="Name">
-        </p>
-        <p class="contact-form__field">
-          <label for="cf-note">What you&rsquo;re working on</label>
-          <input id="cf-note" name="note" type="text" placeholder="What you&rsquo;re working on">
-        </p>
-        <button type="submit">Send <span class="arrow" aria-hidden="true">&#8629;</span></button>
-      </form>
-      <p class="contact-form__note">Opens a draft in your mail app &mdash; or write to me directly below.</p>
-
-      <div class="contact-write" data-reveal>
-        <span class="label">Write</span>
-        <a class="contact-mail" href="mailto:${meta.email}">${esc(meta.email)}</a>
-      </div>
-    </div>
-  </section>
-
-  <footer class="site-foot">
+  return `  <section class="contact-block" id="contact">
+    <img class="contact-block__sky" src="assets/images/home/nashville.svg" alt="" width="1600" height="324" loading="lazy" decoding="async">
     <div class="shell">
-      <div class="site-foot__row">
+      <p class="contact-block__ask">${esc(meta.contactPrompt)}</p>
+      <a class="contact-mail" href="mailto:${meta.email}">${esc(meta.email)}</a>
+      <p class="contact-block__actions">
+        <button class="contact-copy" type="button" data-copy="${meta.email}">Copy address</button>
+        <span class="contact-copy__status" aria-live="polite"></span>
+      </p>
+    </div>
+
+    <footer class="site-foot">
+      <div class="shell site-foot__row">
         <span class="label">&copy; <span data-year>2026</span> ${esc(meta.name)}</span>
         <div class="site-foot__links">
 ${nav.map((n) => `          <a class="label" href="${n.href}">${esc(n.label)}</a>`).join('\n')}
         </div>
         <span class="label">${esc(meta.descriptor)}</span>
       </div>
-    </div>
-  </footer>`;
+    </footer>
+  </section>`;
 }
 
 /* ------------------------------------------------------------- work index */
@@ -230,20 +202,6 @@ ${emailItems(opts)}
     </div>`;
 }
 
-/* Hero filmstrip: every frame links to a real page. */
-function strip() {
-  const frames = [
-    ...projects.map((p) => ({ href: p.href, img: p.image, alt: p.imageAlt, label: p.title })),
-    ...landing.map((l) => ({ href: l.url, img: l.shot, alt: l.shotAlt, label: l.title }))
-  ];
-  return `          <div class="hero__strip-track">
-${frames.map((f) => `            <a class="hero__frame" href="${f.href}" aria-label="${esc(f.label)}">
-              <img src="${f.img}" alt="" width="240" height="180" loading="lazy" decoding="async">
-              <span aria-hidden="true">${esc(f.label)}</span>
-            </a>`).join('\n')}
-          </div>`;
-}
-
 /* -------------------------------------------------------- other fragments */
 
 function disciplineGrid() {
@@ -253,13 +211,6 @@ ${disciplines.map((d) => `      <article class="discipline" data-reveal>
         <h3>${esc(d.title)}</h3>
         <p>${esc(d.note)}</p>
       </article>`).join('\n')}
-    </div>`;
-}
-
-function marqueeBand() {
-  const run = marquee.map((m) => `<span>${esc(m)}</span>`).join('');
-  return `    <div class="marquee" aria-hidden="true">
-      <div class="marquee__track">${run}${run}</div>
     </div>`;
 }
 
@@ -279,6 +230,56 @@ function nextProject(currentId) {
   </a>`;
 }
 
+/* ---------------------------------------------------------------- homepage */
+/* Work as a stack of prints: each card sticks a little lower than the last,
+   so they pile up as the page scrolls. Four tones, in order. */
+function homeWork() {
+  return `      <div class="home-stack">
+${projects.map((p, i) => `        <article class="home-card home-card--${(i % 4) + 1}">
+          <div class="home-card__pic"><img src="${p.image}" alt="${esc(p.imageAlt)}" width="${p.width}" height="${p.height}" loading="lazy" decoding="async"></div>
+          <div class="home-card__txt">
+            <div class="home-card__meta"><span class="label">${esc(p.client)}</span><span class="label">${esc(/^\d{4}$/.test(p.year) ? p.year : 'Concept')}</span></div>
+            <h3 class="home-card__title">${esc(p.title)}</h3>
+            <p class="home-card__role">${esc(p.role)}</p>
+            <div class="home-card__res">
+              <div><strong>${esc(p.result)}</strong><span>${esc(p.resultNote)}</span></div>
+              <a class="text-link" href="${p.href}">Case study <span class="arrow" aria-hidden="true">&#8599;</span></a>
+            </div>
+          </div>
+        </article>`).join('\n')}
+      </div>`;
+}
+
+/* Pages and emails at full width, drifting past. The set is written twice so
+   the drift loops seamlessly; the copy is hidden from assistive tech. Frame
+   width follows the screen's own proportions: landing pages are wide, emails
+   narrow, and the Peacefest artwork narrower still. */
+function homeScreens() {
+  const items = [];
+  const ratioFor = (w) => (w >= 860 ? 0.92 : w >= 600 ? 0.74 : 0.5);
+  const tilt = [-1.5, 1.5, -1, 2, -1.5, 1, -2];
+  const pages = landing.map((l) => ({ src: l.shot, w: l.width, h: l.height, alt: l.shotAlt, title: `${l.title} landing page`, href: l.url, ar: 0.92 }));
+  const mails = emails.map((e) => e.mode === 'image'
+    ? { src: e.image, w: e.width, h: e.height, alt: e.imageAlt, title: `${e.title} email`, href: e.url, ar: ratioFor(e.width) }
+    : { src: e.poster, w: e.posterWidth, h: e.posterHeight, alt: `${e.title} email, full length`, title: `${e.title} email`, href: e.url, ar: 0.74 });
+  // Alternate a page and an email so the wall has rhythm.
+  for (let i = 0; i < Math.max(pages.length, mails.length); i++) {
+    if (pages[i]) items.push(pages[i]);
+    if (mails[i]) items.push(mails[i]);
+  }
+  const shot = (it, i, dup) => `          <button class="home-shot" type="button" style="--ar:${it.ar};--r:${tilt[i % tilt.length]}deg" data-full="${it.src}" data-href="${it.href}" data-title="${esc(it.title)}"${dup ? ' aria-hidden="true" tabindex="-1"' : ` aria-label="Open the full ${esc(it.title)}"`}>
+            <img src="${it.src}" alt="${dup ? '' : esc(it.alt)}" width="${it.w}" height="${it.h}" loading="lazy" decoding="async">
+          </button>`;
+  return `        <div class="home-screens__rail">
+${items.map((it, i) => shot(it, i, false)).join('\n')}
+${items.map((it, i) => shot(it, i, true)).join('\n')}
+        </div>`;
+}
+
+function homeCaps() {
+  return disciplines.map((d) => `      <div class="home-cap"><h3>${esc(d.title)}</h3><p>${esc(d.note)}</p></div>`).join('\n');
+}
+
 /* ------------------------------------------------------------- injection */
 
 const builders = {
@@ -286,14 +287,12 @@ const builders = {
   'mobile-menu': mobileMenu,
   contact,
   'work-index': workIndex,
-  'work-index-featured': () => workIndex({ limit: 3 }),
   'landing-archive': landingArchive,
-  'landing-archive-featured': () => landingArchive({ limit: 2 }),
   'email-archive': emailArchive,
-  'email-archive-featured': () => emailArchive({ limit: 2 }),
-  strip,
   disciplines: disciplineGrid,
-  marquee: marqueeBand,
+  'home-work': homeWork,
+  'home-screens': homeScreens,
+  'home-caps': homeCaps,
   'next-project': nextProject
 };
 
