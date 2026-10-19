@@ -224,9 +224,11 @@ reaches the top of the viewport.
 
 The hero portrait (`assets/images/home/hero-reach.webp`) is the studio photo
 `images/portrait-studio-arms.jpg` with the background removed and a light and
-colour grade to match the orange reference: darker overall, light from one
-side, a warm glow along the edges. Nothing in the photo is generated or
-reshaped; the grade only changes light and colour.
+colour grade to match the orange hero: the face kept near studio exposure with
+a warm key light from camera-right (where the hero's amber glow sits), the suit
+falling off into the red, and a warm glow along the edges. Regenerate it with
+`tools/relight-hero.py`. Nothing in the photo is generated or reshaped; the
+grade only changes light and colour.
 
 ### Hero safe zone
 
