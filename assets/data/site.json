@@ -79,8 +79,24 @@
       "height": 800
     },
     {
-      "id": "artist-edition",
+      "id": "jafvisual",
       "no": "03",
+      "title": "JAFVISUAL",
+      "client": "JAFVISUAL",
+      "category": "Brand + Web Launch",
+      "year": "2026",
+      "role": "A first website for a photographer: new logo, site design and build, domain, email and launch, end to end.",
+      "result": "37.5%",
+      "resultNote": "Search click-through, first month live",
+      "href": "jafvisual.html",
+      "image": "assets/images/work/jafvisual.webp",
+      "imageAlt": "The JAFVISUAL wordmark on a dark ground with an orange glow.",
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "id": "artist-edition",
+      "no": "04",
       "title": "The Artist Edition",
       "client": "Fender × Ibanez",
       "category": "Campaign Concept",
@@ -96,7 +112,7 @@
     },
     {
       "id": "santo-sol",
-      "no": "04",
+      "no": "05",
       "title": "Santo Sol",
       "client": "Valentino × Bad Bunny",
       "category": "Campaign Concept",

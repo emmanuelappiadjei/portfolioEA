@@ -232,10 +232,10 @@ function nextProject(currentId) {
 
 /* ---------------------------------------------------------------- homepage */
 /* Work as a stack of prints: each card sticks a little lower than the last,
-   so they pile up as the page scrolls. Four tones, in order. */
+   so they pile up as the page scrolls. Four tones, cycling in order. */
 function homeWork() {
   return `      <div class="home-stack">
-${projects.map((p, i) => `        <article class="home-card home-card--${(i % 4) + 1}">
+${projects.map((p, i) => `        <article class="home-card home-card--${(i % 4) + 1}" style="--i:${i}">
           <div class="home-card__pic"><img src="${p.image}" alt="${esc(p.imageAlt)}" width="${p.width}" height="${p.height}" loading="lazy" decoding="async"></div>
           <div class="home-card__txt">
             <div class="home-card__meta"><span class="label">${esc(p.client)}</span><span class="label">${esc(/^\d{4}$/.test(p.year) ? p.year : 'Concept')}</span></div>

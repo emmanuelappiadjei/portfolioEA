@@ -112,6 +112,7 @@ contact.html             Contact
 
 hfma-annual.html                  ┐
 family-carnival-campaign.html     │ Case studies
+jafvisual.html                    │
 artist-edition-campaign.html      │
 valentino-bad-bunny-campaign.html ┘
 
@@ -204,7 +205,7 @@ reaches the top of the viewport.
   final outline at the same path) rises from behind one giant word, and the
   cut-out portrait stands in front of both. The word is sized by script to
   span the screen whatever its length; change it in `index.html`
-  (`.home-hero__word`). A small fanned deck of the four project images leads
+  (`.home-hero__word`). A small fanned deck of the project images leads
   down to the work.
 - **Selected work** — every project as a big card; the cards are sticky at
   slightly different offsets, so they stack up as the page scrolls.

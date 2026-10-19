@@ -10,7 +10,7 @@ Check: node tools/check.mjs   (links, assets, anchors, ids, alt text)
 
 Pages:
 - index.html, work.html, landing-pages.html, emails.html, about.html, contact.html
-- hfma-annual.html, family-carnival-campaign.html,
+- hfma-annual.html, family-carnival-campaign.html, jafvisual.html,
   artist-edition-campaign.html, valentino-bad-bunny-campaign.html
 - landing-mahjong-social.html, landing-executive-dinner.html,
   landing-peacefest.html, peace-grounds.html, santo-sol-landing.html
